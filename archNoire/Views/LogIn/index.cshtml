@@ -1,0 +1,25 @@
+﻿
+@model archNoire.Models.User
+@{
+    ViewBag.Title = "index";
+}
+
+<h2>login</h2>
+
+<!--<form method="post">
+    <label for="logInEmail"> email </label>
+    <input type="email" name="logInEmail" placeholder="email" />
+    <label for="logInPassword"> email </label>
+    <input type="password"  name="logInPassword" placeholder="password" />
+    <label for="logInSubmit"> submit </label>
+    <input type="submit" name="logInSubmit" />
+
+</form>`-->
+
+@using (Html.BeginForm("Index", "LogIn", FormMethod.Post))
+{
+    @Html.TextBoxFor(m => m.email, new { @type="email" ,@class = "form-control",@required="true" })
+    @Html.TextBoxFor(m => m.password, new { @class = "form-control",@type="password",@required="true" })
+    <input id="Submit" type="submit" value="submit" />
+}
+

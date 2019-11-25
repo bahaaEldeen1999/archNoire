@@ -1,0 +1,24 @@
+﻿
+@model archNoire.Models.User
+@{
+    ViewBag.Title = "index";
+}
+
+<h2>Sing Up</h2>
+<h1> @ViewBag.message </h1>
+
+@using (Html.BeginForm("Index", "SignUp", FormMethod.Post))
+{
+    @Html.TextBoxFor(m => m.name, new { @class = "form-control", @type = "text", @required = "true" })
+    @Html.TextBoxFor(m => m.email, new { @type = "email", @class = "form-control", @required = "true" })
+
+    @Html.TextBoxFor(m => m.password, new { @class = "form-control", @type = "password", @required = "true" })
+    @Html.TextBoxFor(m => m.check_password, new { @class = "form-control", @type = "password", @required = "true" })
+
+    @Html.TextBoxFor(m => m.gender, new { @class = "form-control", @type = "text", @required = "true" })
+    @Html.TextBoxFor(m => m.location, new { @class = "form-control", @type = "text", @required = "true" })
+    @Html.TextBoxFor(m => m.birth_date, new { @class = "form-control", @type = "date", @required = "true" })
+    @Html.TextBoxFor(m => m.phone_number, new { @class = "form-control", @type = "text", @required = "true" })
+
+    <input id="Submit" type="submit" value="submit" />
+}

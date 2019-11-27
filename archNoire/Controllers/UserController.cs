@@ -12,12 +12,13 @@ namespace archNoire.Controllers
         private int maxBioLength = 100;
         private string userProfilePhoto = "../Images/userProfilePhoto/defaultIM.jpg";
         // GET: User
-        public ActionResult Index()
+        
+        public ActionResult Index(int id)
         {
             ViewBag.Message = "";
-
-            ViewBag.imageSource = userProfilePhoto;
-            return View("initialSignUp");
+            //to do set up model
+  
+            return View();
         }
        [HttpPost]
        private ActionResult InitialSignUp(/*User user*/)
@@ -72,7 +73,7 @@ namespace archNoire.Controllers
             return Content(userBio);
         }
 
-        public ActionResult userSetting()
+        public ActionResult userSetting(int id)
         {
             return View();
         }
@@ -109,6 +110,11 @@ namespace archNoire.Controllers
                 ViewBag.Message = "You have not specified a file.";
             }
             return View("userSetting");
+        }
+
+        public ActionResult Home(int id)
+        {
+            return Content("home");
         }
     }
 }

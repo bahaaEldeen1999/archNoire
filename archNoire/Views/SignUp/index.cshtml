@@ -14,11 +14,17 @@
 
     @Html.TextBoxFor(m => m.password, new { @class = "form-control", @type = "password", @required = "true" })
     @Html.TextBoxFor(m => m.check_password, new { @class = "form-control", @type = "password", @required = "true" })
+    <label> gender </label><br /><br />
+    <label>male : </label>
+    @Html.RadioButtonFor(m => m.gender, "Male")
+    <label >  female : </label>
+    @Html.RadioButtonFor(m => m.gender, "Female")
 
-    @Html.TextBoxFor(m => m.gender, new { @class = "form-control", @type = "text", @required = "true" })
     @Html.TextBoxFor(m => m.location, new { @class = "form-control", @type = "text", @required = "true" })
     @Html.TextBoxFor(m => m.birth_date, new { @class = "form-control", @type = "date", @required = "true" })
     @Html.TextBoxFor(m => m.phone_number, new { @class = "form-control", @type = "text", @required = "true" })
 
     <input id="Submit" type="submit" value="submit" />
+
+
 }

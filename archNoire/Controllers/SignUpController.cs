@@ -25,10 +25,11 @@ namespace archNoire.Controllers
             string phone = user.phone_number;
             string location = user.location;
             string gender = user.gender;
+            System.Diagnostics.Debug.WriteLine(gender );
             DateTime birth_date = user.birth_date;
             if (password == check_password)
             {
-                if( phone != "" && location != "" && gender != "" && name != "" && password != "")
+                if( phone != "" && location != "" && name != "" && password != "")
                 {
                     return View("../Home/index");
                 }

@@ -1,24 +1,47 @@
-﻿
-@model archNoire.Models.User
+﻿@model Tuple<archNoire.Models.User, archNoire.Models.Page>
 @{
-    ViewBag.Title = "index";
+    ViewBag.Title = "UserSignUpIndex";
 }
 
-<h2>Sing Up</h2>
+<h2>User Sing Up</h2>
 <h1> @ViewBag.message </h1>
 
-@using (Html.BeginForm("Index", "SignUp", FormMethod.Post))
+@using (Html.BeginForm("UserSignUpIndex", "SignUp", FormMethod.Post))
 {
-    @Html.TextBoxFor(m => m.name, new { @class = "form-control", @type = "text", @required = "true" })
-    @Html.TextBoxFor(m => m.email, new { @type = "email", @class = "form-control", @required = "true" })
+    @Html.TextBoxFor(tuple => tuple.Item1.name, new { @class = "form-control", @type = "text", @required = "true" })
+    @Html.TextBoxFor(tuple => tuple.Item1.email, new { @type = "email", @class = "form-control", @required = "true" })
 
-    @Html.TextBoxFor(m => m.password, new { @class = "form-control", @type = "password", @required = "true" })
-    @Html.TextBoxFor(m => m.check_password, new { @class = "form-control", @type = "password", @required = "true" })
+    @Html.TextBoxFor(tuple => tuple.Item1.password, new { @class = "form-control", @type = "password", @required = "true" })
+    @Html.TextBoxFor(tuple => tuple.Item1.check_password, new { @class = "form-control", @type = "password", @required = "true" })
 
-    @Html.TextBoxFor(m => m.gender, new { @class = "form-control", @type = "text", @required = "true" })
-    @Html.TextBoxFor(m => m.location, new { @class = "form-control", @type = "text", @required = "true" })
-    @Html.TextBoxFor(m => m.birth_date, new { @class = "form-control", @type = "date", @required = "true" })
-    @Html.TextBoxFor(m => m.phone_number, new { @class = "form-control", @type = "text", @required = "true" })
+    @Html.TextBoxFor(tuple => tuple.Item1.gender, new { @class = "form-control", @type = "text", @required = "true" })
+    @Html.TextBoxFor(tuple => tuple.Item1.location, new { @class = "form-control", @type = "text", @required = "true" })
+    @Html.TextBoxFor(tuple => tuple.Item1.birth_date, new { @class = "form-control", @type = "date", @required = "true" })
+    @Html.TextBoxFor(tuple => tuple.Item1.phone_number, new { @class = "form-control", @type = "text", @required = "true" })
 
-    <input id="Submit" type="submit" value="submit" />
+    <input id="UserSubmit" type="submit" value="User Signup" />
+}
+
+
+
+@{
+    ViewBag.Title = "PageSignUpIndex";
+}
+
+
+<h2>Page Sing Up</h2>
+<h1> @ViewBag.message </h1>
+
+
+@using (Html.BeginForm("PageSignUpIndex", "SignUp", FormMethod.Post))
+{
+    @Html.TextBoxFor(tuple => tuple.Item2.name, new { @class = "form-control", @type = "text", @required = "true" })
+    @Html.TextBoxFor(tuple => tuple.Item2.email, new { @type = "email", @class = "form-control", @required = "true" })
+
+    @Html.TextBoxFor(tuple => tuple.Item2.password, new { @class = "form-control", @type = "password", @required = "true" })
+
+    @Html.TextBoxFor(tuple => tuple.Item2.location, new { @class = "form-control", @type = "text", @required = "true" })
+    @Html.TextBoxFor(tuple => tuple.Item2.phone_number, new { @class = "form-control", @type = "text", @required = "true" })
+
+    <input id="PageSubmit" type="submit" value="Page Signup" />
 }

@@ -17,7 +17,7 @@ namespace archNoire.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(User user) {
+        public ActionResult UserSignUpIndex(User user) {
 
             string name = user.name;
             string password = user.password;
@@ -27,7 +27,7 @@ namespace archNoire.Controllers
             string gender = user.gender;
             DateTime birth_date = user.birth_date;
             if (password == check_password)
-            {
+            {    
                 if( phone != "" && location != "" && gender != "" && name != "" && password != "")
                 {
                     return View("../Home/index");
@@ -35,13 +35,41 @@ namespace archNoire.Controllers
                 else
                 {
                     ViewBag.message = "please fill all fields";
-                    return View();
+                    return View("UserSignUpIndex");
                 }
             }
             else
             {
                 ViewBag.message = "please make sure you entered the same passwords";
-                return View();
+                return View("UserSignUpIndex");
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult PageSignUpIndex(Page page) {
+
+            string name = page.name;
+            string password = page.password;
+            string phone = page.phone_number;
+            string email = page.email;
+            string location = page.location;
+            if (password != "")
+            {
+                if( phone != "" && location != ""  && name != "" && email != "")
+                {
+                    return View("../Home/index");
+                }
+                else
+                {
+                    ViewBag.message = "please fill all fields";
+                    return View("PageSignUpIndex");
+                }
+            }
+            else
+            {
+                ViewBag.message = "please make sure you entered the same passwords";
+                return View("PageSignUpIndex");
             }
         }
 

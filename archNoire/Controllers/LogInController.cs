@@ -15,16 +15,26 @@ namespace archNoire.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Index(User user)
+        public ActionResult UserLoginIndex(User user)
         {
             string logInEmail = user.email;
             string logInPassword = user.password;
             System.Diagnostics.Debug.WriteLine("emil : ");
             System.Diagnostics.Debug.WriteLine(logInEmail);
-
             // to do sql validastion
-            return View();
+            return View("UserLoginIndex");
             
+        }
+
+        [HttpPost]
+        public ActionResult PageLoginIndex(Page page)
+        {
+            string logInEmail = page.email;
+            string logInPassword = page.password;
+            System.Diagnostics.Debug.WriteLine("emil : ");
+            System.Diagnostics.Debug.WriteLine(logInEmail);
+            // to do sql validastion
+            return View("PageLoginIndex");
         }
     }
 }

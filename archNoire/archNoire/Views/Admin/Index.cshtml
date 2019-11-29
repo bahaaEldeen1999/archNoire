@@ -1,0 +1,16 @@
+﻿@model archNoire.Models.Admin
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@Html.ActionLink("Admin login", "index", "Admin")
+
+@using (Html.BeginForm("Index", "Admin", FormMethod.Post))
+{
+    @Html.TextBoxFor(admin => admin.email, new { @type = "email", @class = "form-control", @required = "true" })
+    @Html.TextBoxFor(admin => admin.password, new { @class = "form-control", @type = "password", @required = "true" })
+    <input id="AdminSubmit" type="submit" value="Admin Login" />
+}

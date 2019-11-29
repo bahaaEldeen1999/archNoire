@@ -1,0 +1,42 @@
+﻿
+@model archNoire.Models.UserAndPage
+    @{
+        ViewBag.Title = "UserLoginIndex";
+    }
+
+    <h2>User login</h2>
+
+    <!--<form method="post">
+        <label for="logInEmail"> email </label>
+        <input type="email" name="logInEmail" placeholder="email" />
+        <label for="logInPassword"> email </label>
+        <input type="password"  name="logInPassword" placeholder="password" />
+        <label for="logInSubmit"> submit </label>
+        <input type="submit" name="logInSubmit" />
+
+    </form>`-->
+
+    @using (Html.BeginForm("UserLoginIndex", "LogIn", FormMethod.Post))
+    {
+        @Html.TextBoxFor(UserAndPage => UserAndPage.user.email, new { @type = "email", @class = "form-control", @required = "true" })
+        @Html.TextBoxFor(UserAndPage => UserAndPage.user.password, new { @class = "form-control", @type = "password", @required = "true" })
+        <input id="UserSubmit" type="submit" value="User Login" />
+    }
+
+    <h2>Page login</h2>
+
+
+    @{
+        ViewBag.Title = "UserLoginIndex";
+    }
+
+    <h2>login</h2>
+
+
+    @using (Html.BeginForm("UserLoginIndex", "LogIn", FormMethod.Post))
+    {
+        @Html.TextBoxFor(UserAndPage => UserAndPage.page.email, new { @type = "email", @class = "form-control", @required = "true" })
+        @Html.TextBoxFor(UserAndPage => UserAndPage.page.password, new { @class = "form-control", @type = "password", @required = "true" })
+        <input id="PageSubmit" type="submit" value="Page Login" />
+    }
+

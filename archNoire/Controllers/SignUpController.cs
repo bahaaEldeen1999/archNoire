@@ -27,6 +27,7 @@ namespace archNoire.Controllers
             string gender = user.gender;
             System.Diagnostics.Debug.WriteLine(gender );
             DateTime birth_date = user.birth_date;
+          //  System.Diagnostics.Debug.WriteLine(name+" "+password+" "+phone+" "+location+ " "+gender);
             if (password == check_password)
             {
                 if( phone != "" && location != "" && name != "" && password != "")

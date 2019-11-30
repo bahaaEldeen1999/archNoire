@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using archNoire.Models;
+using archNoire.App_Start;
 namespace archNoire.Controllers
 {
     public class LogInController : Controller
@@ -12,6 +13,7 @@ namespace archNoire.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            
             return View("UserLoginIndex");
         }
         [HttpPost]
@@ -25,7 +27,7 @@ namespace archNoire.Controllers
                 ViewBag.message = "Invalid Password! (i.e. lessthan 8 characters)";
                 return View("UserLoginIndex");
             }
-            System.Diagnostics.Debug.WriteLine("emil : ");
+            
             System.Diagnostics.Debug.WriteLine(logInEmail);
             // to do sql validastion
             return View("UserLoginIndex");

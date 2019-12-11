@@ -1,0 +1,40 @@
+﻿
+@Html.Partial("_userNavBar", null, new ViewDataDictionary { { "id", @ViewBag.userID } })
+@Html.Partial("_userNavBar", null, new ViewDataDictionary { { "nameSearched", @ViewBag.searchName } })
+<style>
+    .row {
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    .col-md-2 {
+        border-right: 2px solid black;
+    }
+
+    .col {
+        min-height: 100vh
+    }
+</style>
+
+
+<h2>user profile</h2>
+
+
+<div class="row">
+
+    <div class="col-md-12">
+        <ul>
+            <li>
+                user 1
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+
+
+@Html.Partial("_userFooter");

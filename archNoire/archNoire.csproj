@@ -195,10 +195,14 @@
     <Content Include="Views\Shared\_layout.cshtml" />
     <Content Include="Views\User\userSetting.cshtml" />
     <Content Include="Views\User\index.cshtml" />
-    <Content Include="Views\Shared\_userNavBar.cshtml" />
     <Content Include="Views\LogIn\UserLoginIndex.cshtml" />
     <Content Include="Views\SignUp\UserSignUpIndex.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\User\Home.cshtml" />
+    <Content Include="Views\Shared\_userNavbar.cshtml" />
+    <Content Include="Views\Shared\_userFooter.cshtml" />
+    <Content Include="Views\User\userSearched.cshtml" />
+    <Content Include="Views\User\searchPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\userProfilePhoto\" />

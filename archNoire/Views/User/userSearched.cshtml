@@ -1,5 +1,5 @@
 ﻿
-@Html.Partial("_userNavBar", null, new ViewDataDictionary { { "id",@ViewBag.userID } })
+@Html.Partial("_userNavBar", null, new ViewDataDictionary { { "id", @ViewBag.userID } })
 <style>
     .row {
         padding: 20px;
@@ -19,12 +19,13 @@
 </style>
 
 
-<h2>user profile</h2>
+<h2>user searched profile</h2>
 
 
 <div class="row">
     <div class="col col-md-2">
         <img src="" alt="profile picture" />
+        <button> add friend ( if not friend else unfriend)</button>
         <h3>name</h3>
         <p>bio</p>
         <h4>phone no</h4>

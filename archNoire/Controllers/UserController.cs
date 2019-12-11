@@ -15,7 +15,9 @@ namespace archNoire.Controllers
         
         public ActionResult Index(int id)
         {
+            ViewBag.searchName = "";
             ViewBag.Message = "";
+            ViewBag.userID = id;
             //to do set up model
   
             return View();
@@ -114,7 +116,20 @@ namespace archNoire.Controllers
 
         public ActionResult Home(int id)
         {
-            return Content("home");
+            ViewBag.userID = id;
+            return View();
+        }
+        public ActionResult UserSearched(int id)
+        {
+            ViewBag.userSearchedID = id;
+
+            return View();
+        }
+        public ActionResult SearchPage(string nameSearched)
+        {
+            ViewBag.searchName = nameSearched;
+
+            return View();
         }
     }
 }

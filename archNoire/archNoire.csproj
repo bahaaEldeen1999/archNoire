@@ -118,14 +118,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\DBController.cs" />
-    <Compile Include="App_Start\DBManager.cs" />
+    <Compile Include="DBControllers\PageDBController.cs" />
+    <Compile Include="DBControllers\UserDBController.cs" />
+    <Compile Include="DBControllers\DBManager.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogInController.cs" />
+    <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\SignUpController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -203,6 +205,10 @@
     <Content Include="Views\Shared\_userFooter.cshtml" />
     <Content Include="Views\User\userSearched.cshtml" />
     <Content Include="Views\User\searchPage.cshtml" />
+    <Content Include="Views\Shared\_userSearchedNavBar.cshtml" />
+    <Content Include="Views\User\PageSearched.cshtml" />
+    <Content Include="Views\Page\Index.cshtml" />
+    <Content Include="Views\Admin\LogIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\userProfilePhoto\" />

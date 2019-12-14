@@ -1,7 +1,8 @@
-﻿@model archNoire.Models.User
+﻿
 @{
     int userId = (int)this.ViewData["id"];
- 
+    string nameSearched = (string)this.ViewData["nameSearched"];
+    //string nameSearched = "";
 }
 <!DOCTYPE html>
 <html>
@@ -41,15 +42,13 @@
                     <li><a href="@Url.Action("Home","User",new {id=userId })">home</a></li>
 
                 </ul>
-
-                @using (Html.BeginForm("SearchPage", "User", FormMethod.Get))
-                {
+                <form class="navbar-form navbar-left">
+                    
                     <div class="form-group">
-                        @Html.TextBoxFor(User => User.searchedUser, new { @type = "text", @class = "form-control", @required = "true" })
+                        <input type="text" class="form-control" placeholder="enter name">
                     </div>
-                    <input id="searchUser" type="submit" value="search" />
-                }
-
+                    <a class="navbar-brand" href="@Url.Action("SearchPage","User",new {  searchedName= nameSearched})">search</a>
+                </form>
                 <ul class="nav navbar-nav navbar-right">
 
                     <li class="dropdown">
@@ -64,6 +63,7 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
+
 
 
 

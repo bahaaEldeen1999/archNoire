@@ -1,0 +1,61 @@
+﻿
+@Html.Partial("_userNavBar", null, new ViewDataDictionary { { "id", @ViewBag.userID } })
+<style>
+    .row {
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    .col-md-2 {
+        border-right: 2px solid black;
+    }
+
+    .col {
+        min-height: 100vh
+    }
+</style>
+
+
+<h2>page searched profile</h2>
+
+
+<div class="row">
+    <div class="col col-md-2">
+        <img src="" alt="profile picture" />
+        <button> like ( if not liked)</button>
+        <h3>name</h3>
+        <p>info</p>
+        <h4>phone no</h4>
+        <h4>location</h4>
+        
+        <h4>email</h4>
+
+    </div>
+    <div class="col col-md-8">
+        <h2>wall</h2>
+        <div class="post">
+
+            <div class="thumbnail">
+                <div class="caption">
+                    <h3>Thumbnail label</h3>
+                    <p>text</p>
+                    <p></p>
+                </div>
+                <img src="" alt="" class="post-img">
+                <div class="icons">
+                    <a href="@Url.Action("LikePost","Post")"> <i class="fa fa-thumbs-up"></i> like</a>
+                    <a href="@Url.Action("ShowComments","Comment")"> <i class="fa fa fa-commenting"></i> comment</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+@Html.Partial("_userFooter");

@@ -11,13 +11,16 @@ namespace archNoire.Controllers
     {
         private int maxBioLength = 100;
         private string userProfilePhoto = "../Images/userProfilePhoto/defaultIM.jpg";
+        private int userId ;
+        private bool isLogged = false;
         // GET: User
         
         public ActionResult Index(int id)
         {
             ViewBag.searchName = "";
             ViewBag.Message = "";
-            ViewBag.userID = id;
+            userId = id;
+            ViewBag.userID = userId;
             //to do set up model
   
             return View();
@@ -122,13 +125,15 @@ namespace archNoire.Controllers
         public ActionResult UserSearched(int id)
         {
             ViewBag.userSearchedID = id;
-
+            ViewBag.userID = userId;
             return View();
         }
-        public ActionResult SearchPage(string nameSearched)
+        public ActionResult SearchPage(User user)
         {
-            ViewBag.searchName = nameSearched;
-
+            ViewBag.userID = userId;
+            ViewBag.searchName = user.searchedUser;
+            int[] searchIDS = { 1, 2, 3, 4, 6, 7, 8, 9, 2, 21, 12 };
+            ViewBag.usersSearchedID = searchIDS;
             return View();
         }
     }

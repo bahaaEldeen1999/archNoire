@@ -17,6 +17,7 @@ namespace archNoire.Models
         public DateTime birth_date { set; get; }
         public string phone_number { set; get; }
         public string bio { set; get; }
+        public string searchedUser { set; get; }
 
   
       

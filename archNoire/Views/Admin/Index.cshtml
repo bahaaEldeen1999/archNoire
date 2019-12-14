@@ -1,16 +1,29 @@
-﻿@model archNoire.Models.Admin
+﻿
+@model archNoire.Models.Admin
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<div class="row">
+    <div class="col-md-2">
+        add admins
+        @using (Html.BeginForm("AddAdmin", "SignUp", FormMethod.Post))
+        {
+            @Html.TextBoxFor(Admin => Admin.name, new { @class = "form-control", @type = "text", @required = "true" })
+            @Html.TextBoxFor(Admin => Admin.email, new { @type = "email", @class = "form-control", @required = "true" })
 
-@Html.ActionLink("Admin login", "index", "Admin")
+            @Html.TextBoxFor(Admin => Admin.password, new { @class = "form-control", @type = "password", @required = "true" })
+            
 
-@using (Html.BeginForm("Index", "Admin", FormMethod.Post))
-{
-    @Html.TextBoxFor(admin => admin.email, new { @type = "email", @class = "form-control", @required = "true" })
-    @Html.TextBoxFor(admin => admin.password, new { @class = "form-control", @type = "password", @required = "true" })
-    <input id="AdminSubmit" type="submit" value="Admin Login" />
-}
+            <input id="adminSubmit" type="submit" value="add admin" />
+        }
+    </div>
+    <div class="col-md-5">
+        modify user database and page database
+    </div>
+    <div class="col-md-5">
+        statistics
+    </div>
+
+</div>

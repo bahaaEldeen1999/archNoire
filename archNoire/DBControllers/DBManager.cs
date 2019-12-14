@@ -5,7 +5,7 @@ using System.Web;
 using System.Data.SqlClient;
 using System.Data;
 using System.Text;
-namespace archNoire.App_Start
+namespace archNoire.DBControllers
 {
     public class DBManager
     {

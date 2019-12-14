@@ -118,8 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="DBControllers\PageDBController.cs" />
     <Compile Include="App_Start\DBController.cs" />
-    <Compile Include="App_Start\DBManager.cs" />
+    <Compile Include="DBControllers\DBManager.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CommentController.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\SignUpController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="DBControllers\UserDBController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -201,6 +203,7 @@
     <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="DataModels\" />
     <Folder Include="Images\userProfilePhoto\" />
     <Folder Include="Views\Comment\" />
     <Folder Include="Views\Post\" />

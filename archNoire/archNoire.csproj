@@ -119,7 +119,6 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="DBControllers\PageDBController.cs" />
-    <Compile Include="App_Start\DBController.cs" />
     <Compile Include="DBControllers\DBManager.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />

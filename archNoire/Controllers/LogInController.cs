@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using archNoire.Models;
-using archNoire.App_Start;
+//using archNoire.App_Start;
 namespace archNoire.Controllers
 {
     public class LogInController : Controller

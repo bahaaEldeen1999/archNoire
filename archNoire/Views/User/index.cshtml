@@ -1,4 +1,5 @@
-﻿
+﻿@model archNoire.Models.Post
+@using System.Data;
 @Html.Partial("_userNavBar", null, new ViewDataDictionary { { "id",@ViewBag.userID } })
 <style>
     .row {
@@ -16,6 +17,12 @@
     .col {
         min-height: 100vh
     }
+    img{
+        width:100px;
+        height:100px;
+        border-radius:50%;
+         
+    }
 </style>
 
 
@@ -24,33 +31,88 @@
 
 <div class="row">
     <div class="col col-md-2">
-        <img src="" alt="profile picture" />
-        <h3>name</h3>
-        <p>bio</p>
-        <h4>phone no</h4>
-        <h4>location</h4>
-        <h4>birth date</h4>
-        <h4>email</h4>
+        <img src="@ViewBag.photo" alt="profile picture" />
+        <h3>@ViewBag.name</h3>
+        <h3>@ViewBag.bio  </h3>
+        <h3> @ViewBag.email  </h3>
+        <h3>@ViewBag.location</h3>
+        <h3>@ViewBag.gender</h3>
+        <h3> @ViewBag.birthDate</h3>
+        <h3> @ViewBag.phone </h3>
+
+
+
 
     </div>
     <div class="col col-md-8">
+       
+        @using (Html.BeginForm("AddPost", "User", FormMethod.Post))
+        {
+            @Html.TextBoxFor(Post => Post.text, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "text" })
+            @Html.TextBoxFor(Post => Post.location, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "location" })
+            @Html.TextBoxFor(Post => Post.date, new { @class = "form-control", @type = "date", @required = "true", @placeholder = "date" })
+
+
+            <input id="addUserPost" type="submit" value="add post" />
+        }
+        <!--get posts-->
         <h2>wall</h2>
-        <div class="post">
+        @if (ViewBag.dposts != null)
+        {
+        <div class="posts">
+            @{
+                int i = 0;
+                foreach (DataRow row in ViewBag.dposts.Rows)
+            {
+            <div class="post">
 
-            <div class="thumbnail">
-                <div class="caption">
-                    <h3>Thumbnail label</h3>
-                    <p>text</p>
-                    <p></p>
+                <div class="thumbnail">
+                    <div class="caption">
+                       
+                        <p>@row["text"].ToString()</p>
+                        <p>@row["location"].ToString()</p>
+                        <p>@row["date"].ToString()</p>
+                    </div>
+                   
+                    <div class="icons">
+                        @using (Html.BeginForm("likePostWall", "User", FormMethod.Post))
+                        {
+                            <input style="display:none" value="@row["user_id"]" name="userId" />
+                            <input style="display:none" value="@row["post_id"]" name="postId" />
+                            <input style="display:none" value="@row["user_id"]" name="userPostedID" />
+                            <input id="likePostWall" type="submit" value=" Like post" />
+                        }
+                        <i class="fa fa-thumbs-up"></i> like @row["no_of_likes"].ToString()
+                     
+                        @using (Html.BeginForm("AddComment", "User", FormMethod.Post))
+                        {
+                            <input style="display:none" value="@row["user_id"]" name="userID" />
+                            <input style="display:none" value="@row["post_id"]" name="postID" />
+                            <input style="display:none" value="@row["user_id"]" name="userPostedID" />
+                            <textarea class="form-control" value="@row["user_id"]" name="text"></textarea>
+
+                            <input id="AddComment" type="submit" value=" add comment" />
+                        }
+                    </div>
+                    @if (ViewBag.comments[i] != null)
+                    {
+                    <div class="comments">
+                        @foreach (DataRow rowComment in ViewBag.comments[i].Rows)
+                        {
+                            <p>@rowComment["text"].ToString()</p>
+                            <p>no of likes @rowComment["no_of_likes"].ToString()</p>
+
+                        }
+                    </div>
+                    }
                 </div>
-                <img src="" alt="" class="post-img">
-                <div class="icons">
-                    <a href="@Url.Action("LikePost","Post")"> <i class="fa fa-thumbs-up"></i> like</a>
-                    <a href="@Url.Action("ShowComments","Comment")"> <i class="fa fa fa-commenting"></i> comment</a>
-                </div>
+
             </div>
-
+                    i++;
+                }
+            }
         </div>
+        }
 
     </div>
 </div>

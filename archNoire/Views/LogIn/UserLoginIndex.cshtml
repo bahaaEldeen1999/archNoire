@@ -6,20 +6,12 @@
 
     <h2>User login</h2>
 
-    <!--<form method="post">
-        <label for="logInEmail"> email </label>
-        <input type="email" name="logInEmail" placeholder="email" />
-        <label for="logInPassword"> email </label>
-        <input type="password"  name="logInPassword" placeholder="password" />
-        <label for="logInSubmit"> submit </label>
-        <input type="submit" name="logInSubmit" />
 
-    </form>`-->
 
-    @using (Html.BeginForm("UserLoginIndex", "LogIn", FormMethod.Post))
+    @using (Html.BeginForm("Index", "User", FormMethod.Post))
     {
-        @Html.TextBoxFor(UserAndPage => UserAndPage.user.email, new { @type = "email", @class = "form-control", @required = "true" })
-        @Html.TextBoxFor(UserAndPage => UserAndPage.user.password, new { @class = "form-control", @type = "password", @required = "true" })
+        @Html.TextBoxFor(UserAndPage => UserAndPage.user.email, new { @type = "email", @class = "form-control", @required = "true",@placeholder = "email" })
+        @Html.TextBoxFor(UserAndPage => UserAndPage.user.password, new { @class = "form-control", @type = "password", @required = "true" , @placeholder = "password" })
         <input id="UserSubmit" type="submit" value="User Login" />
     }
 

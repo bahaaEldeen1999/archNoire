@@ -18,6 +18,8 @@ namespace archNoire.Models
         public string phone_number { set; get; }
         public string bio { set; get; }
         public string searchedUser { set; get; }
+        public string imageSource { set; get; }
+        public int userId { set; get; }
 
   
       

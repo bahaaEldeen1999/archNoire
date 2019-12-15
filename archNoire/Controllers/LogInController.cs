@@ -21,15 +21,12 @@ namespace archNoire.Controllers
         {
             string logInEmail = par.user.email;
             string logInPassword = par.user.password;
-            // validation here
-            if(logInPassword.Length < 8)
-            {
-                ViewBag.message = "Invalid Password! (i.e. lessthan 8 characters)";
-                return View("UserLoginIndex");
-            }
+        
             
-            System.Diagnostics.Debug.WriteLine(logInEmail);
+         
+
             // to do sql validastion
+
             return View("UserLoginIndex");
             
         }

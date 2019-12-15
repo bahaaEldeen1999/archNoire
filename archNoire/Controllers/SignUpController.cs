@@ -4,14 +4,16 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using archNoire.Models;
-
+using archNoire.DBControllers;
 namespace archNoire.Controllers
 {
     public class SignUpController : Controller
     {
         // GET: SignUp
+        private UserDBController userController;
         public ActionResult Index()
         {
+            userController = new UserDBController();
             ViewBag.message = "";
             return View("UserSignUpIndex");
         }
@@ -26,6 +28,7 @@ namespace archNoire.Controllers
             string location = par.user.location;
             string gender = par.user.gender;
             DateTime birth_date = par.user.birth_date;
+            string email = par.user.email;
             if (password == check_password)
             {
                 if (password.Length < 8)
@@ -50,7 +53,8 @@ namespace archNoire.Controllers
                 }
                 if ( phone != "" && location != "" && gender != "" && name != "" && password != "")
                 {
-                    return View("../Home/index");
+                   
+                    return RedirectToAction("InitialSignUp", "User",par.user );
                 }
                 else
                 {

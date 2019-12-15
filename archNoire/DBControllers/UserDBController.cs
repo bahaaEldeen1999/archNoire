@@ -1,6 +1,7 @@
 ﻿using archNoire.App_Start;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 
@@ -15,9 +16,9 @@ namespace archNoire.DBControllers
         }
 
 
-        public int insertUser(int user_id, string name, string bio, string gender, int phone_no, string location, string birth_date, string personal_email, string password)
+        public int insertUser( string name, string bio, string gender, string phone_no, string location, DateTime birth_date, string personal_email, string password)
         {
-            string sql = String.Format("insert into [USER] values({0},'{1}','{2}','{3}',{4},'{5}','{6}','{7}','{8}')", user_id, name, bio, gender, phone_no, location, birth_date, personal_email, password);
+            string sql = String.Format("insert into [USER] values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')", name, bio, gender, phone_no, location, birth_date.Date, personal_email, password);
             return dBManager.ExecuteNonQuery(sql);
         }
 
@@ -31,15 +32,15 @@ namespace archNoire.DBControllers
 
 
 
-        public int insertUserPost(int user_id, int post_id, string text, string date, string location, int no_of_likes)
+        public int insertUserPost(int user_id, string text, DateTime date, string location, int no_of_likes)
         {
-            string sql = String.Format("insert into [USER_POST] values({0},{1},'{2}','{3}','{4}',{5})", user_id, post_id, text, date, location, no_of_likes);
+            string sql = String.Format("insert into [USER_POST] values({0},'{1}','{2}','{3}',{4})", user_id, text, date.Date, location, no_of_likes);
             return dBManager.ExecuteNonQuery(sql);
         }
 
-        public int insertUserPostComment(int user_posted_id, int post_id, int comment_id, int user_commented, string text, int no_of_likes)
+        public int insertUserPostComment(int user_posted_id, int post_id, int user_commented, string text, int no_of_likes)
         {
-            string sql = String.Format("insert into [USER_POST_COMMENT] values({0},{1},{2},{3},'{4}',{5})", user_posted_id, post_id, comment_id, user_commented, text, no_of_likes);
+            string sql = String.Format("insert into [USER_POST_COMMENT](user_posted_id,post_id,user_commented_id,text,no_of_likes) values({0},{1},{2},'{3}',{4})", user_posted_id, post_id, user_commented, text,no_of_likes);
             return dBManager.ExecuteNonQuery(sql);
         }
 
@@ -56,9 +57,9 @@ namespace archNoire.DBControllers
         }
 
 
-        public int insertUserPhoto(int user_id, int user_photo_id, string source)
+        public int insertUserPhoto(int user_id, string source)
         {
-            string sql = String.Format("insert into [USER_PHOTO] values({0},{1},'{2}')", user_id, user_photo_id, source);
+            string sql = String.Format("insert into [USER_PHOTO] values({0},'{1}')", user_id, source);
             return dBManager.ExecuteNonQuery(sql);
         }
 
@@ -67,10 +68,26 @@ namespace archNoire.DBControllers
             string sql = String.Format("insert into [USER_POST_PHOTO] values({0},{1},{2},'{3}')", user_id, post_id, user_post_photo_id, source);
             return dBManager.ExecuteNonQuery(sql);
         }
+        public int insertUserFriend(int user_id1, int user_id2)
+        {
+            string sql = String.Format("insert into [FRIENDS] values({0},{1})", user_id1, user_id2);
+            return dBManager.ExecuteNonQuery(sql);
+        }
+        // updates
+
+        public int UpdateUserBio(int user_id, string bio)
+        {
+            string sql = String.Format("update USER set bio = '{1}' where user_id = {0} )", user_id,bio);
+            return dBManager.ExecuteNonQuery(sql);
+        }
+        public int updatePostNoOfLikes(int user_id, int post_id,int no)
+        {
+            string sql = String.Format("update USER_POST set no_of_likes = {1} where user_id = {0} and post_id = {2} ", user_id,no,post_id);
+            return dBManager.ExecuteNonQuery(sql);
+        }
 
 
-
-
+        // deletes
         public int Deleteuser(int user_id)
         {
             string sql = "DELETE FROM USER WHERE user_id = '" + user_id + "'";
@@ -115,8 +132,51 @@ namespace archNoire.DBControllers
 
         public int DeleteFriend(int user1_id, int user2_id)
         {
-            string sql = "DELETE FROM FRIENDS WHERE user1_id = '" + user1_id + "' AND user2_id = '" + user2_id + "'";
+            string sql = "DELETE FROM FRIENDS WHERE (user1_id = " + user1_id + " AND user2_id = " + user2_id + ") or (user1_id = " + user2_id + " AND user2_id = " + user1_id + ")";
             return dBManager.ExecuteNonQuery(sql);
+        }
+
+        // gets 
+        public DataTable getUserInfo(string email,string password)
+        {
+            string sql = "select * from dbo.[USER] where dbo.[USER].personal_email = '" + email + "' and dbo.[USER].password ='" + password + "'";
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getUserPhoto(int id)
+        {
+            string sql = "select * from dbo.[USER_PHOTO] where user_id = " +id;
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getUserPosts(int id)
+        {
+            string sql = "select * from dbo.[USER_POST] where user_id =" + id;
+            return dBManager.ExecuteReader(sql);
+        }
+
+        public DataTable getUserFromName(string name)
+        {
+            string sql = "select * from dbo.[USER] where name='" + name + "'";
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getUserInfoFromId(int id)
+        {
+            string sql = "select * from dbo.[USER] where user_id=" + id ;
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getIfUserIsFriend(int user1ID,int user2ID)
+        {
+            string sql = "select * from dbo.[FRIENDS] where (user1_id=" + user1ID + " and user2_id = "+user2ID+ " )or (user1_id = "+user2ID+ " and user2_id = "+ user1ID + ") ";
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getNoOfLikesOfUserPost(int userID, int PostId)
+        {
+            string sql = "select * from  USER_POST_LIKES where user_posted_id = " + userID + "and  post_id = " + PostId;
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getPostComments(int user_posted_id, int PostId)
+        {
+            string sql = "select * from  USER_POST_COMMENT where user_posted_id = " + user_posted_id + " and  post_id = " + PostId;
+            return dBManager.ExecuteReader(sql);
         }
     }
 }

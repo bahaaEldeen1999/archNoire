@@ -1,4 +1,4 @@
-﻿
+﻿@model archNoire.Models.User
 @Html.Partial("_userNavBar", null, new ViewDataDictionary { { "id", @ViewBag.userID } })
 <style>
     .row {
@@ -25,33 +25,35 @@
 <div class="row">
     <div class="col col-md-2">
         <img src="" alt="profile picture" />
-        <button> add friend ( if not friend else unfriend)</button>
-        <h3>name</h3>
-        <p>bio</p>
-        <h4>phone no</h4>
-        <h4>location</h4>
-        <h4>birth date</h4>
-        <h4>email</h4>
+        @if (@ViewBag.friend)
+        {
+            using (Html.BeginForm("RemoveFriend", "User", FormMethod.Post))
+            {
+
+        <input value="@Convert.ToInt32(ViewBag.user2.Rows[0]["user_id"].ToString())" style="display:none" name="user2ID"/>
+                <input id="RemoveFriend" type="submit" value="remove friend" />
+            }
+        }
+        else
+        {
+            using (Html.BeginForm("AddFriend", "User", FormMethod.Post))
+            {
+
+                <input value="@Convert.ToInt32(ViewBag.user2.Rows[0]["user_id"].ToString())" style="display:none" name="user2ID"/>
+                <input id="AddFriend" type="submit" value="add friend" />
+            }
+        }
+        <h3>@ViewBag.user2.Rows[0]["name"].ToString()</h3>
+        <p>@ViewBag.user2.Rows[0]["bio"].ToString()</p>
+        <h4>@ViewBag.user2.Rows[0]["phone_no"].ToString()</h4>
+        <h4>@ViewBag.user2.Rows[0]["location"].ToString()</h4>
+        <h4>@ViewBag.user2.Rows[0]["birth_date"].ToString()</h4>
+        <h4>@ViewBag.user2.Rows[0]["personal_email"].ToString()</h4>
 
     </div>
     <div class="col col-md-8">
         <h2>wall</h2>
-        <div class="post">
-
-            <div class="thumbnail">
-                <div class="caption">
-                    <h3>Thumbnail label</h3>
-                    <p>text</p>
-                    <p></p>
-                </div>
-                <img src="" alt="" class="post-img">
-                <div class="icons">
-                    <a href="@Url.Action("LikePost","Post")"> <i class="fa fa-thumbs-up"></i> like</a>
-                    <a href="@Url.Action("ShowComments","Comment")"> <i class="fa fa fa-commenting"></i> comment</a>
-                </div>
-            </div>
-
-        </div>
+   
 
     </div>
 </div>

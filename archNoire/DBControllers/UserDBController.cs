@@ -85,6 +85,11 @@ namespace archNoire.DBControllers
             string sql = String.Format("update USER_POST set no_of_likes = {1} where user_id = {0} and post_id = {2} ", user_id,no,post_id);
             return dBManager.ExecuteNonQuery(sql);
         }
+        public int updateCommentNoOfLikes(int user_id, int post_id,int comment_id,int no)
+        {
+            string sql = String.Format("update USER_POST_COMMENT set no_of_likes = {1} where user_posted_id = {0} and post_id = {2} and comment_id = {3} ", user_id,no,post_id,comment_id);
+            return dBManager.ExecuteNonQuery(sql);
+        }
 
 
         // deletes
@@ -173,9 +178,19 @@ namespace archNoire.DBControllers
             string sql = "select * from  USER_POST_LIKES where user_posted_id = " + userID + "and  post_id = " + PostId;
             return dBManager.ExecuteReader(sql);
         }
+        public DataTable getNoOfLikesOfUserComment(int user_posted_id, int PostId,int commentID)
+        {
+            string sql = "select * from  USER_POST_COMMENT_LIKES where user_posted_id = " + user_posted_id + "and  post_id = " + PostId + " and comment_id = "+commentID;
+            return dBManager.ExecuteReader(sql);
+        }
         public DataTable getPostComments(int user_posted_id, int PostId)
         {
             string sql = "select * from  USER_POST_COMMENT where user_posted_id = " + user_posted_id + " and  post_id = " + PostId;
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getFriendsAndUsersPosts(int userID)
+        {
+            string sql = "select * from USER_POST join FRiENDS on user1_id = "+userID+ " or user2_id = "+ userID +" where user_id = user1_id or user_id = user2_id or user_id = "+userID;
             return dBManager.ExecuteReader(sql);
         }
     }

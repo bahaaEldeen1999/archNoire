@@ -1,4 +1,6 @@
-﻿@Html.Partial("_userNavBar", null, new ViewDataDictionary { { "id", @ViewBag.userID } })
+﻿@model archNoire.Models.Post
+@using System.Data;
+@Html.Partial("_userNavBar", null, new ViewDataDictionary { { "id", @ViewBag.userID } })
 <style>
     .row {
         padding: 20px;
@@ -25,22 +27,75 @@
 
     <div class="col col-md-12">
         <h2>friends and pages posts he liked</h2>
-        <div class="post">
+        @if (ViewBag.dposts != null)
+        {
+            <div class="posts">
+                @{
+                    int i = 0;
+                    foreach (DataRow row in ViewBag.dposts.Rows)
+                    {
+                        <div class="post">
 
-            <div class="thumbnail">
-                <div class="caption">
-                    <h3>Thumbnail label</h3>
-                    <p>text</p>
-                    <p></p>
-                </div>
-                <img src="" alt="" class="post-img">
-                <div class="icons">
-                    <a href="@Url.Action("LikePost","Post")"> <i class="fa fa-thumbs-up"></i> like</a>
-                    <a href="@Url.Action("ShowComments","Comment")"> <i class="fa fa fa-commenting"></i> comment</a>
-                </div>
+                            <div class="thumbnail">
+                                <div class="caption">
+
+                                    <p>@row["text"].ToString()</p>
+                                    <p>@row["location"].ToString()</p>
+                                    <p>@row["date"].ToString()</p>
+                                </div>
+
+                                <div class="icons">
+                                    @using (Html.BeginForm("likePostHome", "User", FormMethod.Post))
+                                    {
+                                      
+
+                                        <input style="display:none" value="@ViewBag.userID" name="userId" />
+                                        <input style="display:none" value="@row["post_id"]" name="postId" />
+                                        <input style="display:none" value="@row["user_id"]" name="userPostedID" />
+                                        <input id="likePostWall" type="submit" value=" Like post" />
+                                    }
+                                    <i class="fa fa-thumbs-up"></i> like @row["no_of_likes"].ToString()
+
+                                    @using (Html.BeginForm("AddCommentHome", "User", FormMethod.Post))
+                                    {
+                                        <input style="display:none" value="@ViewBag.userID" name="user_added_comment" />
+                                        <input style="display:none" value="@row["post_id"]" name="postID" />
+                                        <input style="display:none" value="@row["user_id"]" name="userPostedID" />
+                                        <textarea class="form-control" value="@row["user_id"]" name="text"></textarea>
+
+                                        <input id="AddCommentHome" type="submit" value=" add comment" />
+                                    }
+                                </div>
+                                @if (ViewBag.comments[i] != null)
+                                {
+                                    <div class="comments">
+                                        @foreach (DataRow rowComment in ViewBag.comments[i].Rows)
+                                        {
+                                            <p>@rowComment["text"].ToString()</p>
+                                            <p>no of likes @rowComment["no_of_likes"].ToString()</p>
+                                            using (Html.BeginForm("likeCommentHome", "User", FormMethod.Post))
+                                            {
+                                                <input style="display:none" value="@ViewBag.userID" name="user_liked_id" />
+                                                <input style="display:none" value="@rowComment["user_commented_id"]" name="userCommentedID" />
+                                                <input style="display:none" value="@rowComment["post_id"]" name="postId" />
+                                                <input style="display:none" value="@rowComment["user_posted_id"]" name="userPostedID" />
+                                                <input style="display:none" value="@rowComment["comment_id"]" name="comment_id" />
+
+
+                                                <input id="LikeCommentHome" type="submit" value=" like comment" />
+                                            }
+
+                                        }
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                        i++;
+                    }
+                }
             </div>
-
-        </div>
+        }
 
     </div>
 </div>

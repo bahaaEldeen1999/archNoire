@@ -101,6 +101,17 @@
                         {
                             <p>@rowComment["text"].ToString()</p>
                             <p>no of likes @rowComment["no_of_likes"].ToString()</p>
+                            using (Html.BeginForm("likeComment", "User", FormMethod.Post))
+                            {
+                                <input style="display:none" value="@ViewBag.userID" name="user_liked_id" />
+                                <input style="display:none" value="@rowComment["user_commented_id"]" name="userCommentedID" />
+                                <input style="display:none" value="@rowComment["post_id"]" name="postId" />
+                                <input style="display:none" value="@rowComment["user_posted_id"]" name="userPostedID" />
+                                <input style="display:none" value="@rowComment["comment_id"]" name="comment_id" />
+                           
+
+                                <input id="LikeComment" type="submit" value=" like comment" />
+                            }
 
                         }
                     </div>

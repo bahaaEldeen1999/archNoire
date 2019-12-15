@@ -83,15 +83,17 @@ namespace archNoire.Controllers
                 // get comments for each post
                 
                 List<DataTable> comments = new List<DataTable>(); ;
-                
-                
-                foreach (DataRow row in dposts.Rows)
+
+                if (dposts != null)
                 {
-                    int userID = Convert.ToInt32(row["user_id"].ToString());
-                    int postId = Convert.ToInt32(row["post_id"].ToString());
-                    DataTable dc = userController.getPostComments(userID, postId);
-                    comments.Add(dc);
-                   
+                    foreach (DataRow row in dposts.Rows)
+                    {
+                        int userID = Convert.ToInt32(row["user_id"].ToString());
+                        int postId = Convert.ToInt32(row["post_id"].ToString());
+                        DataTable dc = userController.getPostComments(userID, postId);
+                        comments.Add(dc);
+
+                    }
                 }
                 ViewBag.comments = comments;
                 return View();
@@ -266,8 +268,31 @@ namespace archNoire.Controllers
 
         public ActionResult Home(int id)
         {
-            ViewBag.userID = id;
-            return View();
+            if (isLogged)
+            {
+                ViewBag.userID = id;
+                // get his and his friends posts
+                DataTable dposts = userController.getFriendsAndUsersPosts(id);
+                ViewBag.dposts = dposts;
+                // get comments for each post
+
+                List<DataTable> comments = new List<DataTable>(); ;
+
+                if (dposts != null)
+                {
+                    foreach (DataRow row in dposts.Rows)
+                    {
+                        int userID = Convert.ToInt32(row["user_id"].ToString());
+                        int postId = Convert.ToInt32(row["post_id"].ToString());
+                        DataTable dc = userController.getPostComments(userID, postId);
+                        comments.Add(dc);
+
+                    }
+                }
+                ViewBag.comments = comments;
+                return View();
+            }
+            return RedirectToAction("Index", "Login");
         }
         public ActionResult UserSearched(int id)
         {
@@ -341,10 +366,16 @@ namespace archNoire.Controllers
             return RedirectToAction("Index", new { id = userId });
         }
         [HttpPost]
-        public ActionResult likeComment(int userId, int postId, int userPostedID,int userCommentedID,int comment_id)
+        public ActionResult likeComment(int user_liked_id, int postId, int userPostedID,int userCommentedID,int comment_id)
         {
-            userController.insertUserPostCommentLike( userCommentedID,userPostedID, postId,comment_id, userId);
+            if(userController.insertUserPostCommentLike( userCommentedID,userPostedID, postId,comment_id, user_liked_id) != 0)
+            {
+                // update number of likes
+                DataTable dNoOfLikes = userController.getNoOfLikesOfUserComment(userPostedID, postId,comment_id);
+                int noOfLikes = Convert.ToInt32(dNoOfLikes.Rows.Count);
 
+                userController.updateCommentNoOfLikes(userPostedID, postId, comment_id,noOfLikes);
+            }
             return RedirectToAction("Index", new { id = userId });
         }
         [HttpPost]
@@ -354,13 +385,40 @@ namespace archNoire.Controllers
 
             return RedirectToAction("Index", new { id = userId });
         }
-        /*[HttpPost]
-        public ActionResult ShowComments(int user_posted_id,int post_id)
+        [HttpPost]
+        public ActionResult likePostHome(int userId, int postId, int userPostedID)
         {
-            DataTable dt =  userController.getPostComments(user_posted_id, post_id);
+            if (userController.insertUserPostLike(userPostedID, postId, userId) != 0)
+            {
+                // update number of likes
+                DataTable dNoOfLikes = userController.getNoOfLikesOfUserPost(userPostedID, postId);
+                int noOfLikes = Convert.ToInt32(dNoOfLikes.Rows.Count);
 
-
+                userController.updatePostNoOfLikes(userPostedID, postId, noOfLikes);
+            }
+            return RedirectToAction("Home", new { id = userId });
         }
-        */
+        [HttpPost]
+        public ActionResult likeCommentHome(int user_liked_id, int postId, int userPostedID, int userCommentedID, int comment_id)
+        {
+            if (userController.insertUserPostCommentLike(userCommentedID, userPostedID, postId, comment_id, user_liked_id) != 0)
+            {
+                // update number of likes
+                DataTable dNoOfLikes = userController.getNoOfLikesOfUserComment(userPostedID, postId, comment_id);
+                int noOfLikes = Convert.ToInt32(dNoOfLikes.Rows.Count);
+
+                userController.updateCommentNoOfLikes(userPostedID, postId, comment_id, noOfLikes);
+            }
+            return RedirectToAction("Home", new { id = userId });
+        }
+        [HttpPost]
+        public ActionResult AddCommentHome(int user_added_comment, int postID, int userPostedID, string text)
+        {
+            userController.insertUserPostComment(userPostedID, postID, user_added_comment, text, 0);
+
+            return RedirectToAction("Home", new { id = userId });
+        }
+
+
     }
 }

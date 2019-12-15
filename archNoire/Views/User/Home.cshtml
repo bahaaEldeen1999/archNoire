@@ -1,6 +1,10 @@
 ﻿@model archNoire.Models.Post
 @using System.Data;
+@{
+    Layout = "";
+}
 @Html.Partial("_userNavBar", null, new ViewDataDictionary { { "id", @ViewBag.userID } })
+
 <style>
     .row {
         padding: 20px;
@@ -47,7 +51,7 @@
                                 <div class="icons">
                                     @using (Html.BeginForm("likePostHome", "User", FormMethod.Post))
                                     {
-                                      
+
 
                                         <input style="display:none" value="@ViewBag.userID" name="userId" />
                                         <input style="display:none" value="@row["post_id"]" name="postId" />

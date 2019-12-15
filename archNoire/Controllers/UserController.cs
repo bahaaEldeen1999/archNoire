@@ -14,7 +14,7 @@ namespace archNoire.Controllers
     public class UserController : Controller
     {
         private int maxBioLength = 100;
-        private string userProfilePhoto = "../../Images/userProfilePhoto/defaultIM.jpg";
+        static private string userProfilePhoto = "../../Images/userProfilePhoto/defaultIM.jpg";
         static private int userId ;
         static private bool isLogged = false;
         static private string userEmail;
@@ -50,7 +50,7 @@ namespace archNoire.Controllers
                 bio = dt.Rows[0]["bio"].ToString();
                 birth_date = Convert.ToDateTime( dt.Rows[0]["birth_date"].ToString());
                 userPhoto = dPhoto.Rows[0]["source"].ToString();
-
+                userProfilePhoto = userPhoto;
 
                 //userId = id;
                 //ViewBag.userID = userId;
@@ -76,7 +76,7 @@ namespace archNoire.Controllers
                 ViewBag.phone = phone_number;
                 ViewBag.bio = bio;
                 ViewBag.email = userEmail;
-                ViewBag.photo = userPhoto;
+                ViewBag.photo = userProfilePhoto;
                 // get posts 
                 DataTable dposts = userController.getUserPosts(userId);
                 ViewBag.dposts = dposts;
@@ -222,6 +222,8 @@ namespace archNoire.Controllers
             userId = Convert.ToInt32( dt.Rows[0][0].ToString());
             // insert photo
             userController.insertUserPhoto(userId, userProfilePhoto);
+            // make user befreind himself
+            userController.insertUserFriend(userId, userId);
 
             return RedirectToAction("Index", "Login");
 
@@ -229,14 +231,42 @@ namespace archNoire.Controllers
 
         public ActionResult userSetting(int id)
         {
-            return View();
+            if (isLogged)
+            {
+                ViewBag.name = name;
+                ViewBag.location = location;
+                ViewBag.gender = gender;
+                ViewBag.birthDate = birth_date;
+                ViewBag.phone = phone_number;
+                ViewBag.bio = bio;
+                ViewBag.email = userEmail;
+                ViewBag.photo = userPhoto;
+                ViewBag.image = userProfilePhoto;
+                ViewBag.userID = userId;
+                return View();
+            }
+            return RedirectToAction("Index", "Login");
         }
         [HttpPost]
         public ActionResult userSetting(User user)
         {
             // validation
+            user.check_password = user.password;
+            if (validateSignUp(user))
+            {
+                string name = user.name;
+                string password = user.password;
+                string phone = user.phone_number;
+                string location = user.location;
+                string gender = user.gender;
+                DateTime birth_date = user.birth_date;
+                string email = user.email;
+                string bio = user.bio;
+                userController.updateUserInfo(userId, name, bio, gender, phone, location, birth_date, email, password);
+            }
+            ViewBag.userID = userId;
 
-            return View();
+            return RedirectToAction("userSetting", new { id = userId });
         }
 
         [HttpPost]
@@ -253,6 +283,8 @@ namespace archNoire.Controllers
                     //ViewBag.Message = "image updated successfully";
                     ViewBag.imageSource = "../Images/userProfilePhoto/" + file.FileName;
                     userProfilePhoto = "../../Images/userProfilePhoto/" + file.FileName;
+                    // updae user photo
+                    userController.UpdateUserPhoto(userId, userProfilePhoto);
                 }
                 catch (Exception ex)
                 {
@@ -263,7 +295,8 @@ namespace archNoire.Controllers
             {
                 ViewBag.Message = "You have not specified a file.";
             }
-            return View("userSetting");
+            ViewBag.userID = userId;
+            return RedirectToAction("userSetting", new { id = userId });
         }
 
         public ActionResult Home(int id)

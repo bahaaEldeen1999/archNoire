@@ -1,5 +1,9 @@
 ﻿@model archNoire.Models.User
+@{
+    Layout = "";
+}
 @Html.Partial("_userNavBar", null, new ViewDataDictionary { { "id", @ViewBag.userID } })
+
 <style>
     .row {
         padding: 20px;
@@ -30,7 +34,7 @@
             using (Html.BeginForm("RemoveFriend", "User", FormMethod.Post))
             {
 
-        <input value="@Convert.ToInt32(ViewBag.user2.Rows[0]["user_id"].ToString())" style="display:none" name="user2ID"/>
+                <input value="@Convert.ToInt32(ViewBag.user2.Rows[0]["user_id"].ToString())" style="display:none" name="user2ID" />
                 <input id="RemoveFriend" type="submit" value="remove friend" />
             }
         }
@@ -39,7 +43,7 @@
             using (Html.BeginForm("AddFriend", "User", FormMethod.Post))
             {
 
-                <input value="@Convert.ToInt32(ViewBag.user2.Rows[0]["user_id"].ToString())" style="display:none" name="user2ID"/>
+                <input value="@Convert.ToInt32(ViewBag.user2.Rows[0]["user_id"].ToString())" style="display:none" name="user2ID" />
                 <input id="AddFriend" type="submit" value="add friend" />
             }
         }
@@ -53,7 +57,7 @@
     </div>
     <div class="col col-md-8">
         <h2>wall</h2>
-   
+
 
     </div>
 </div>

@@ -74,10 +74,19 @@ namespace archNoire.DBControllers
             return dBManager.ExecuteNonQuery(sql);
         }
         // updates
-
+        public int updateUserInfo(int userID,string name, string bio, string gender, string phone_no, string location, DateTime birth_date, string personal_email, string password)
+        {
+            string sql = String.Format("update [USER] set name ='{0}',bio = '{1}',gender = '{2}' , phone_no = '{3}',location = '{4}',birth_date = '{5}',personal_email='{6}',password='{7}' where user_id = {8} ", name,bio,gender,phone_no,location,birth_date.Date,personal_email,password,userID);
+            return dBManager.ExecuteNonQuery(sql);
+        }
         public int UpdateUserBio(int user_id, string bio)
         {
-            string sql = String.Format("update USER set bio = '{1}' where user_id = {0} )", user_id,bio);
+            string sql = String.Format("update [USER] set bio = '{1}' where user_id = {0} ", user_id,bio);
+            return dBManager.ExecuteNonQuery(sql);
+        }
+        public int UpdateUserPhoto(int user_id, string source)
+        {
+            string sql = String.Format("update USER_PHOTO set source = '{1}' where user_id = {0} ", user_id, source);
             return dBManager.ExecuteNonQuery(sql);
         }
         public int updatePostNoOfLikes(int user_id, int post_id,int no)

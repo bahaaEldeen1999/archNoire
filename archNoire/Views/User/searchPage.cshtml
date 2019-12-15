@@ -1,5 +1,9 @@
 ﻿@using System.Data
+@{
+    Layout = "";
+}
 @Html.Partial("_userNavBar", null, new ViewDataDictionary { { "id", @ViewBag.userID } })
+
 <style>
     .row {
         padding: 20px;
@@ -25,14 +29,14 @@
 <div class="row">
     @if (ViewBag.searchedUsers != null)
     {
-    <div class="col-md-12">
-        <ul>
-            @foreach (DataRow user in ViewBag.searchedUsers.Rows)
-            {
-                <li><a href="@Url.Action("UserSearched", "User", new { id = Convert.ToInt32(user["user_id"].ToString()) })">@user["name"].ToString()</a></li>
-            }
-        </ul>
-    </div>
+        <div class="col-md-12">
+            <ul>
+                @foreach (DataRow user in ViewBag.searchedUsers.Rows)
+                {
+                    <li><a href="@Url.Action("UserSearched", "User", new { id = Convert.ToInt32(user["user_id"].ToString()) })">@user["name"].ToString()</a></li>
+                }
+            </ul>
+        </div>
     }
 </div>
 

@@ -360,13 +360,40 @@ namespace archNoire.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult addPost(Post post)
+        public ActionResult addPost(Post post, HttpPostedFileBase postPhoto)
         {
             string postText = post.text;
             string postLocation = post.location;
-            DateTime date = post.date;
+            DateTime date =DateTime.Now;
             // insert post to db 
             userController.insertUserPost(userId, postText, date, postLocation, 0);
+            // check if post has photo
+            if (postPhoto != null && postPhoto.ContentLength > 0)
+            {
+                try
+                {
+                    string path = Path.Combine(Server.MapPath("../Images/userPostPhotos"),
+                    Path.GetFileName(postPhoto.FileName));
+                    postPhoto.SaveAs(path);
+                    //ViewBag.Message = "image updated successfully";
+                   // ViewBag.imageSource = "../Images/userProfilePhoto/" + postPhoto.FileName;
+                    string postPhotoURL  = "../../Images/userPostPhotos/" + postPhoto.FileName;
+                    // get user post ID
+                    DataTable dPost = userController.getLastInsertedPost();
+                    int postID = Convert.ToInt32( dPost.Rows[0]["post_id"].ToString());
+                    // inser post  photo
+                    userController.insertUserPostPhoto(userId, postID, postPhotoURL);
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = "please choose a valid file";
+                }
+            }
+            else
+            {
+                ViewBag.Message = "You have not specified a file.";
+            }
+
             return RedirectToAction("Index", new { id = userId });
 
         }

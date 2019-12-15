@@ -37,7 +37,7 @@ namespace archNoire.DBControllers
             string sql = String.Format("insert into [USER_POST] values({0},'{1}','{2}','{3}',{4})", user_id, text, date.Date, location, no_of_likes);
             return dBManager.ExecuteNonQuery(sql);
         }
-
+    
         public int insertUserPostComment(int user_posted_id, int post_id, int user_commented, string text, int no_of_likes)
         {
             string sql = String.Format("insert into [USER_POST_COMMENT](user_posted_id,post_id,user_commented_id,text,no_of_likes) values({0},{1},{2},'{3}',{4})", user_posted_id, post_id, user_commented, text,no_of_likes);
@@ -63,9 +63,9 @@ namespace archNoire.DBControllers
             return dBManager.ExecuteNonQuery(sql);
         }
 
-        public int insertUserPostPhoto(int user_id, int post_id, int user_post_photo_id, string source)
+        public int insertUserPostPhoto(int user_id, int post_id, string source)
         {
-            string sql = String.Format("insert into [USER_POST_PHOTO] values({0},{1},{2},'{3}')", user_id, post_id, user_post_photo_id, source);
+            string sql = String.Format("insert into [USER_POST_PHOTO](user_id,post_id,source) values({0},{1},'{2}')", user_id, post_id, source);
             return dBManager.ExecuteNonQuery(sql);
         }
         public int insertUserFriend(int user_id1, int user_id2)
@@ -163,7 +163,7 @@ namespace archNoire.DBControllers
         }
         public DataTable getUserPosts(int id)
         {
-            string sql = "select * from dbo.[USER_POST] where user_id =" + id;
+            string sql = "select * from dbo.[USER_POST] as u left join USER_POST_PHOTO as p on u.user_id = p.user_id and u.post_id = p.post_id  where u.user_id =" + id;
             return dBManager.ExecuteReader(sql);
         }
 
@@ -199,7 +199,17 @@ namespace archNoire.DBControllers
         }
         public DataTable getFriendsAndUsersPosts(int userID)
         {
-            string sql = "select * from USER_POST join FRiENDS on user1_id = "+userID+ " or user2_id = "+ userID +" where user_id = user1_id or user_id = user2_id or user_id = "+userID;
+            string sql = "select distinct * from USER_POST as f join FRiENDS on user1_id = "+userID+ " or user2_id = "+ userID + " left join USER_POST_PHOTO as p on p.post_id = f.post_id  where f.user_id = user1_id or f.user_id = user2_id or f.user_id = " + userID;
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getUserPostFromDate(int userId,DateTime date)
+        {
+            string sql = "select * from USER_POST where user_id = "+userId+ " and date = '"+date.Date+"'" ;
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getLastInsertedPost()
+        {
+            string sql = "SELECT TOP 1 post_id FROM USER_POST ORDER BY post_id DESC;";
             return dBManager.ExecuteReader(sql);
         }
     }

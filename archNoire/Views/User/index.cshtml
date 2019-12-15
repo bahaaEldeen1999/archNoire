@@ -50,15 +50,20 @@
     </div>
     <div class="col col-md-8">
 
-        @using (Html.BeginForm("AddPost", "User", FormMethod.Post))
-        {
-            @Html.TextBoxFor(Post => Post.text, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "text" })
-            @Html.TextBoxFor(Post => Post.location, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "location" })
-            @Html.TextBoxFor(Post => Post.date, new { @class = "form-control", @type = "date", @required = "true", @placeholder = "date" })
+        @using (Html.BeginForm("AddPost", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.TextBoxFor(Post => Post.text, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "text" })
+        @Html.TextBoxFor(Post => Post.location, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "location" })
+   
 
+        <h2>upload postPhoto</h2>
+       
+        <br />
 
-            <input id="addUserPost" type="submit" value="add post" />
-        }
+        <input type="file" name="postPhoto" id="postPhoto" />
+
+    <input id="addUserPost" type="submit" value="add post" />
+}
         <!--get posts-->
         <h2>wall</h2>
         @if (ViewBag.dposts != null)
@@ -71,6 +76,10 @@
                         <div class="post">
 
                             <div class="thumbnail">
+                                @if( row["source"] != null)
+                                {
+                                    <img src="@row["source"].ToString()" style="border-radius:0;width:300px" />
+                                }
                                 <div class="caption">
 
                                     <p>@row["text"].ToString()</p>

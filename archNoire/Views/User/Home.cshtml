@@ -41,6 +41,10 @@
                         <div class="post">
 
                             <div class="thumbnail">
+                                @if (row["source"] != null)
+                                {
+                                    <img src="@row["source"].ToString()" style="border-radius:0;width:300px" />
+                                }
                                 <div class="caption">
 
                                     <p>@row["text"].ToString()</p>

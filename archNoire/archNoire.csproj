@@ -212,6 +212,7 @@
     <Content Include="Views\Admin\LogIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Images\userPostPhotos\" />
     <Folder Include="Images\userProfilePhoto\" />
     <Folder Include="Views\Comment\" />
     <Folder Include="Views\Post\" />

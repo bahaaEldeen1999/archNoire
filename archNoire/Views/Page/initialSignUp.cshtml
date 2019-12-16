@@ -1,0 +1,72 @@
+﻿@model archNoire.Models.Page 
+@{
+    ViewBag.Title = "initialSignUp";
+    Layout = "";
+}
+
+<h2>welcome</h2>
+
+<div class="container">
+
+    @using (Html.BeginForm("UploadInitialImage",
+                            "Page",
+                            FormMethod.Post,
+                            new { enctype = "multipart/form-data" }))
+    {
+        <h2>upload your page picture</h2>
+        <img src="@ViewBag.imageSource" />
+        <br />
+
+        <input type="file" name="file" id="file" />
+        <input type="submit" value="Upload Image" />
+
+
+    }
+    <h2> tell us a LITTLE bit more about yourself </h2>
+    @using (Html.BeginForm("updateInfo",
+                        "Page",
+                        FormMethod.Post))
+    {
+
+        @Html.TextBoxFor(Page => Page.info, new { @type = "text", @class = " bio-initial" })
+
+        if(ViewBag.Message.Length > 0)
+        {
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Message
+    </div>
+        }
+            <input type="submit" value="continue to log in" />
+
+
+            }
+
+
+        </div>
+<style>
+    div,h2{
+        text-align:center;
+    }
+    img{
+        width:200px;
+        height:200px;
+        border-radius:50%;
+        text-align:center;
+    }
+    input{
+        display:block;
+        margin: 10px auto;
+        width:300px;
+        border:1px solid black;
+        background:white;
+        outline:none;
+
+
+    }
+    .bio-initial{
+        padding:10px;
+        min-width:500px;
+    }
+  
+
+</style>

@@ -1,34 +1,52 @@
 ﻿
 @model archNoire.Models.UserAndPage
-    @{
-        ViewBag.Title = "UserLoginIndex";
+@{
+    ViewBag.Title = "UserLoginIndex";
+}
+<style>
+    input {
+        margin-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto
     }
 
-    <h2>User login</h2>
-
-
-
-    @using (Html.BeginForm("Index", "User", FormMethod.Post))
-    {
-        @Html.TextBoxFor(UserAndPage => UserAndPage.user.email, new { @type = "email", @class = "form-control", @required = "true",@placeholder = "email" })
-        @Html.TextBoxFor(UserAndPage => UserAndPage.user.password, new { @class = "form-control", @type = "password", @required = "true" , @placeholder = "password" })
-        <input id="UserSubmit" type="submit" value="User Login" />
+    .btn {
+        border: 1px solid black;
+        background: white;
     }
 
-    <h2>Page login</h2>
-
-
-    @{
-        ViewBag.Title = "UserLoginIndex";
+    .container {
+        text-align: center
     }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6" style="border-right:black 2px solid">
+            <h2>User login</h2>
 
-    <h2>login</h2>
 
 
-    @using (Html.BeginForm("PageLoginIndex", "LogIn", FormMethod.Post))
-    {
-        @Html.TextBoxFor(UserAndPage => UserAndPage.page.email, new { @type = "email", @class = "form-control", @required = "true" })
-        @Html.TextBoxFor(UserAndPage => UserAndPage.page.password, new { @class = "form-control", @type = "password", @required = "true" })
-        <input id="PageSubmit" type="submit" value="Page Login" />
-    }
+            @using (Html.BeginForm("Index", "User", FormMethod.Post))
+            {
+                @Html.TextBoxFor(UserAndPage => UserAndPage.user.email, new { @type = "email", @class = "form-control", @required = "true", @placeholder = "email" })
+                @Html.TextBoxFor(UserAndPage => UserAndPage.user.password, new { @class = "form-control", @type = "password", @required = "true", @placeholder = "password" })
+                <input id="UserSubmit" type="submit" value="User Login" class="btn " />
+            }
+        </div>
+        <div class="col-md-6">
+            <h2>Page login</h2>
+
+
+
+
+
+            @using (Html.BeginForm("Index", "Page", FormMethod.Post))
+            {
+                @Html.TextBoxFor(UserAndPage => UserAndPage.page.email, new { @type = "email", @class = "form-control", @required = "true" })
+                @Html.TextBoxFor(UserAndPage => UserAndPage.page.password, new { @class = "form-control", @type = "password", @required = "true" })
+                <input id="PageSubmit" type="submit" value="Page Login" class="btn" />
+            }
+        </div>
+    </div>
+</div>
 

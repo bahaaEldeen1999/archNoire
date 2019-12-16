@@ -10,7 +10,10 @@ namespace archNoire.Models
         public string name { set; get; }
         public string location { set; get; }
         public string password { set; get; }
-       public string email { set; get; }
+        public string check_password { set; get; }
+        public string email { set; get; }
         public string phone_number { set; get; }
+        public DateTime date { get; set; }
+        public string info { get; set; }
     }
 }

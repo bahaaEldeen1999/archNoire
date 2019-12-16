@@ -1,9 +1,42 @@
 ﻿
 @{
     ViewBag.Title = "index";
+
 }
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+    }
+
+    * {
+        transition: all ease-in-out .5s;
+    }
+
+    .overlay {
+        background: rgba(0,0,0,.7);
+        height: 100vh
+    }
+
+    .bt {
+        background: white;
+        border: black 1px solid;
+        padding: 10px;
+        margin: 20px;
+        color: black;
+    }
+
+        .bt:hover {
+            background: grey;
+        }
+</style>
 <!-- Html.ActionLink(text, action, contoller)  -->
-@Html.ActionLink("log in", "index", "login")
+<div style="background:url(../../Images/appImages/BG.jpg);height:100vh;background-attachment:fixed;background-size:cover">
+    <div class="overlay">
+        <div class="container" style="text-align:center;padding:70px;">
+            @Html.ActionLink("log in", "index", "login", null, new { @class = "bt" })
 
-@Html.ActionLink("Sign up" , "index" , "SignUp")
-
+            @Html.ActionLink("Sign up", "index", "SignUp", null, new { @class = "bt" })
+        </div>
+    </div>
+</div>

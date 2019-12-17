@@ -199,7 +199,7 @@ namespace archNoire.DBControllers
         }
         public DataTable getFriendsAndUsersPosts(int userID)
         {
-            string sql = "select distinct * from USER_POST as f join FRiENDS on user1_id = "+userID+ " or user2_id = "+ userID + " left join USER_POST_PHOTO as p on p.post_id = f.post_id  where f.user_id = user1_id or f.user_id = user2_id or f.user_id = " + userID;
+            string sql = "select  * from USER_POST as f join FRiENDS on user1_id = "+userID+ " or user2_id = "+ userID + " left join USER_POST_PHOTO as p on p.post_id = f.post_id  where f.user_id = user1_id or f.user_id = user2_id ";
             return dBManager.ExecuteReader(sql);
         }
         public DataTable getUserPostFromDate(int userId,DateTime date)

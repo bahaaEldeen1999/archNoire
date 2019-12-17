@@ -1,48 +1,69 @@
 ﻿@model archNoire.Models.UserAndPage
-@{
-    ViewBag.Title = "UserSignUpIndex";
-}
+<style>
+    input {
+        margin-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto
+    }
 
-<h2>User Sing Up</h2>
+    .btn {
+        border: 1px solid black;
+        background: white;
+    }
 
-
-@using (Html.BeginForm("InitialSignUp", "User", FormMethod.Post))
-{
-    @Html.TextBoxFor(UserAndPage => UserAndPage.user.name, new { @class = "form-control", @type = "text", @required = "true",@placeholder="name" })
-    @Html.TextBoxFor(UserAndPage => UserAndPage.user.email, new { @type = "email", @class = "form-control", @required = "true", @placeholder = "email" })
-    
-    @Html.TextBoxFor(UserAndPage => UserAndPage.user.password, new { @class = "form-control", @type = "password", @required = "true" , @placeholder = "password" })
-    @Html.TextBoxFor(UserAndPage => UserAndPage.user.check_password, new { @class = "form-control", @type = "password", @required = "true", @placeholder = "confirm password" })
-
-    @Html.TextBoxFor(UserAndPage => UserAndPage.user.gender, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "gender" })
-    @Html.TextBoxFor(UserAndPage => UserAndPage.user.location, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "location" })
-
-    @Html.TextBoxFor(UserAndPage => UserAndPage.user.birth_date, new { @class = "form-control", @type = "date", @required = "true" })
-    @Html.TextBoxFor(UserAndPage => UserAndPage.user.phone_number, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "phone number" })
-
-    <input id="UserSubmit" type="submit" value="User Signup" />
-}
+    .container {
+        text-align: center
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6" style="border-right:black 2px solid">
+            <h2>User Sing Up</h2>
 
 
+            @using (Html.BeginForm("InitialSignUp", "User", FormMethod.Post))
+            {
+                @Html.TextBoxFor(UserAndPage => UserAndPage.user.name, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "name" })
+                @Html.TextBoxFor(UserAndPage => UserAndPage.user.email, new { @type = "email", @class = "form-control", @required = "true", @placeholder = "email" })
 
-@{
-    ViewBag.Title = "UserSignUpIndex";
-}
+                @Html.TextBoxFor(UserAndPage => UserAndPage.user.password, new { @class = "form-control", @type = "password", @required = "true", @placeholder = "password" })
+                @Html.TextBoxFor(UserAndPage => UserAndPage.user.check_password, new { @class = "form-control", @type = "password", @required = "true", @placeholder = "confirm password" })
+
+                @Html.TextBoxFor(UserAndPage => UserAndPage.user.gender, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "gender" })
+                @Html.TextBoxFor(UserAndPage => UserAndPage.user.location, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "location" })
+
+                @Html.TextBoxFor(UserAndPage => UserAndPage.user.birth_date, new { @class = "form-control", @type = "date", @required = "true" })
+                @Html.TextBoxFor(UserAndPage => UserAndPage.user.phone_number, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "phone number" })
+
+                <input id="UserSubmit" type="submit" value="User Signup" class="btn" />
+            }
 
 
-<h2>Page Sing Up</h2>
-<h1> @ViewBag.message </h1>
 
 
-@using (Html.BeginForm("PageSignUpIndex", "SignUp", FormMethod.Post))
-{
-    @Html.TextBoxFor(UserAndPage => UserAndPage.page.name, new { @class = "form-control", @type = "text", @required = "true" })
-    @Html.TextBoxFor(UserAndPage => UserAndPage.page.email, new { @type = "email", @class = "form-control", @required = "true" })
-                                   
-    @Html.TextBoxFor(UserAndPage => UserAndPage.page.password, new { @class = "form-control", @type = "password", @required = "true" })
-                                   
-    @Html.TextBoxFor(UserAndPage => UserAndPage.page.location, new { @class = "form-control", @type = "text", @required = "true" })
-    @Html.TextBoxFor(UserAndPage => UserAndPage.page.phone_number, new { @class = "form-control", @type = "text", @required = "true" })
+        </div>
+        <div class="col-md-6">
+            <h2>Page Sing Up</h2>
 
-    <input id="PageSubmit" type="submit" value="Page Signup" />
-}
+
+
+            @using (Html.BeginForm("InitialSignUp", "Page", FormMethod.Post))
+            {
+                @Html.TextBoxFor(UserAndPage => UserAndPage.page.name, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "name" })
+                @Html.TextBoxFor(UserAndPage => UserAndPage.page.email, new { @type = "email", @class = "form-control", @required = "true", @placeholder = "email" })
+
+                @Html.TextBoxFor(UserAndPage => UserAndPage.page.password, new { @class = "form-control", @type = "password", @required = "true", @placeholder = "password" })
+
+                @Html.TextBoxFor(UserAndPage => UserAndPage.page.check_password, new { @class = "form-control", @type = "password", @required = "true", @placeholder = "confirm password" })
+
+                @Html.TextBoxFor(UserAndPage => UserAndPage.page.location, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "location" })
+
+                @Html.TextBoxFor(UserAndPage => UserAndPage.page.phone_number, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "phone number" })
+
+              
+
+                <input id="PageSubmit" type="submit" value="Page Signup" class="btn" />
+            }
+        </div>
+    </div>
+</div>

@@ -614,5 +614,39 @@ namespace archNoire.Controllers
             return RedirectToAction("PageSearched", new { pageID = pageID });
         }
 
+
+        [HttpPost]
+        public ActionResult likePagePostHome(int userId, int postId, int pagePostedID)
+        {
+            if (pageController.insertPagePostLike(userId, pagePostedID, postId) != 0)
+            {
+                // update number of likes
+                DataTable dNoOfLikes = pageController.getNoOfLikesOfPagePost(pagePostedID, postId);
+                int noOfLikes = Convert.ToInt32(dNoOfLikes.Rows.Count);
+
+                pageController.updatePostNoOfLikes(pagePostedID, postId, noOfLikes);
+            }
+            return RedirectToAction("Home", new { id = userId });
+        }
+        [HttpPost]
+        public ActionResult likePageCommentHome(int user_liked_id, int postId, int pagePostedID, int userCommentedID, int comment_id)
+        {
+            if (pageController.insertPagePostCommentLike(user_liked_id, userCommentedID, pagePostedID, postId, comment_id) != 0)
+            {
+                // update number of likes
+                DataTable dNoOfLikes = pageController.getNoOfLikesOfPageComment(pagePostedID, postId, comment_id);
+                int noOfLikes = Convert.ToInt32(dNoOfLikes.Rows.Count);
+
+                pageController.updateCommentNoOfLikes(pagePostedID, postId, comment_id, noOfLikes);
+            }
+            return RedirectToAction("Home", new { id = userId });
+        }
+        [HttpPost]
+        public ActionResult AddPageCommentHome(int user_added_comment, int postID, int pagePostedID, string text)
+        {
+            pageController.insertPagePostComment(user_added_comment, pagePostedID, postID, text, 0);
+
+            return RedirectToAction("Home", new { id = userId });
+        }
     }
 }

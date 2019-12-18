@@ -240,7 +240,7 @@ namespace archNoire.DBControllers
         }
         public DataTable getPagePostsUserLike(int userID)
         {
-            string sql = "select * from PAGE_POST as p join PAGE_LIKES as l on l.page_id = p.page_id where l.user_id = "+userID;
+            string sql = "select * from PAGE_POST as p join PAGE_LIKES as l on l.page_id = p.page_id left join PAGE_POST_PHOTO as i on i.page_post_id = p.page_post_id where l.user_id = "+userID;
             return dBManager.ExecuteReader(sql);
         }
 

@@ -24,12 +24,12 @@
 </style>
 
 
-<h2>user searched profile</h2>
+<h2>page searched profile</h2>
 
 
 <div class="row">
     <div class="col col-md-2">
-        <img src="" alt="profile picture" />
+        <img src="@ViewBag.page.Rows[0]["source"]" alt="profile picture" />
         @if (@ViewBag.like)
         {
             using (Html.BeginForm("RemoveLikePage", "User", FormMethod.Post))
@@ -55,22 +55,40 @@
         <h4>@ViewBag.page.Rows[0]["business_email"].ToString()</h4>
 
     </div>
+    <div class="col-md-12">
+        <h2>add review</h2>
+        @using (Html.BeginForm("AddReview", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+
+            <input value="@Convert.ToInt32(ViewBag.page.Rows[0]["page_id"].ToString())" style="display:none" name="pageID" />
+            <input style="display:none" value="@ViewBag.userID" name="userId" />
+            <textarea name="text"></textarea>
+            <input id="addReview" type="submit" value="add review" />
+        }
+        <!--get reviews-->
+
+        @if (ViewBag.reviews != null)
+        {
+            <div class="reviews">
+                @{
+
+                    foreach (DataRow row in ViewBag.reviews.Rows)
+                    {
+                        <div class="review">
+                            <h3> @row["name"].ToString() </h3>
+                            <p> @row["text"].ToString() </p>
+
+
+                        </div>
+
+                    }
+                }
+            </div>
+        }
+
+    </div>
     <div class="col col-md-5">
 
-        @using (Html.BeginForm("AddPost", "Page", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            @Html.TextBoxFor(EventAndPost => EventAndPost.Post.text, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "text" })
-            @Html.TextBoxFor(EventAndPost => EventAndPost.Post.location, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "location" })
-
-
-            <h2>upload postPhoto</h2>
-
-            <br />
-
-            <input type="file" name="postPhoto" id="pagePostPhoto" />
-
-            <input id="addPagePost" type="submit" value="add post" />
-        }
         <!--get posts-->
         <h2>wall</h2>
         @if (ViewBag.posts != null)
@@ -96,20 +114,48 @@
 
                                 <div class="icons">
 
+                                    @using (Html.BeginForm("likePostPageSearch", "User", FormMethod.Post))
+                                    {
+                                        <input style="display:none" value="@ViewBag.userID" name="userId" />
+                                        <input style="display:none" value="@row["page_post_id"]" name="postId" />
+                                        <input style="display:none" value="@row["page_id"]" name="pageID" />
+                                        <input id="likePostWallPageSearch" type="submit" value=" Like post" />
+                                    }
                                     <i class="fa fa-thumbs-up"></i> like @row["no_of_likes"].ToString()
+
+                                    @using (Html.BeginForm("AddCommentPageSearch", "User", FormMethod.Post))
+                                    {
+                                        <input style="display:none" value="@ViewBag.userID" name="userID" />
+                                        <input style="display:none" value="@row["page_post_id"]" name="postID" />
+                                        <input style="display:none" value="@row["page_id"]" name="pageID" />
+                                        <textarea class="form-control" value="" name="text"></textarea>
+
+                                        <input id="AddCommentPageSearch" type="submit" value=" add comment" />
+                                    }
 
                                 </div>
                                 @if (ViewBag.comments[i] != null)
                                 {
-                                    <div class="comments">
-                                        @foreach (DataRow rowComment in ViewBag.comments[i].Rows)
+                                <div class="comments">
+                                    @foreach (DataRow rowComment in ViewBag.comments[i].Rows)
+                                    {
+                                        <p>@rowComment["text"].ToString()</p>
+                                        <p>no of likes @rowComment["no_of_likes"].ToString()</p>
+
+                                        using (Html.BeginForm("likePageComment", "User", FormMethod.Post))
                                         {
-                                            <p>@rowComment["text"].ToString()</p>
-                                            <p>no of likes @rowComment["no_of_likes"].ToString()</p>
+                                            <input style="display:none" value="@ViewBag.userID" name="user_liked_id" />
+                                            <input style="display:none" value="@rowComment["user_commented_id"]" name="userCommentedID" />
+                                            <input style="display:none" value="@rowComment["page_post_id"]" name="postId" />
+                                            <input style="display:none" value="@rowComment["page_id"]" name="pagePostedID" />
+                                            <input style="display:none" value="@rowComment["page_post_comment_id"]" name="comment_id" />
 
 
+                                            <input id="LikePageComment" type="submit" value=" like comment" />
                                         }
-                                    </div>
+
+                                    }
+                                </div>
                                 }
                             </div>
 
@@ -147,8 +193,17 @@
                                 </div>
 
                                 <div class="icons">
+                                    @using (Html.BeginForm("goingToEvent", "User", FormMethod.Post))
+                                    {
+                                    <input style="display:none" value="@ViewBag.userID" name="userID" />
+                                    <input style="display:none" value="@row["page_id"]" name="pageID" />
+                                    <input style="display:none" value="@row["event_id"]" name="eventID" />
 
-                                    <i class="fa fa-thumbs-up"></i> like @row["no_of_people_going"].ToString()
+
+
+                                    <input id="GoingToEvent" type="submit" value="go to event" />
+                                    }
+                                    <i class="fa fa-thumbs-up"></i> going to event @row["no_of_people_going"].ToString()
 
                                 </div>
 

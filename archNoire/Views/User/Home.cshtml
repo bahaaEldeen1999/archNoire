@@ -104,6 +104,79 @@
                 }
             </div>
         }
+        @if (ViewBag.pagePost != null)
+        {
+            <div class="posts">
+                @{
+                    int i = 0;
+                    foreach (DataRow row in ViewBag.pagePost.Rows)
+                    {
+                        <div class="post">
+
+                            <div class="thumbnail">
+                                @if (row["source"] != null)
+                                {
+                                    <img src="@row["source"].ToString()" style="border-radius:0;width:300px" />
+                                }
+                                <div class="caption">
+
+                                    <p>@row["text"].ToString()</p>
+                                    <p>@row["location"].ToString()</p>
+                                    <p>@row["date"].ToString()</p>
+                                </div>
+
+                                <div class="icons">
+                                    @using (Html.BeginForm("likePostHome", "User", FormMethod.Post))
+                                    {
+
+
+                                        <input style="display:none" value="@ViewBag.userID" name="userId" />
+                                        <input style="display:none" value="@row["post_id"]" name="postId" />
+                                        <input style="display:none" value="@row["user_id"]" name="userPostedID" />
+                                        <input id="likePostWall" type="submit" value=" Like post" />
+                                    }
+                                    <i class="fa fa-thumbs-up"></i> like @row["no_of_likes"].ToString()
+
+                                    @using (Html.BeginForm("AddCommentHome", "User", FormMethod.Post))
+                                    {
+                                        <input style="display:none" value="@ViewBag.userID" name="user_added_comment" />
+                                        <input style="display:none" value="@row["post_id"]" name="postID" />
+                                        <input style="display:none" value="@row["user_id"]" name="userPostedID" />
+                                        <textarea class="form-control" value="@row["user_id"]" name="text"></textarea>
+
+                                        <input id="AddCommentHome" type="submit" value=" add comment" />
+                                    }
+                                </div>
+                                @if (ViewBag.pageComments[i] != null)
+                                {
+                                    <div class="comments">
+                                        @foreach (DataRow rowComment in ViewBag.pageComments[i].Rows)
+                                        {
+                                            <p>@rowComment["text"].ToString()</p>
+                                            <p>no of likes @rowComment["no_of_likes"].ToString()</p>
+                                            using (Html.BeginForm("likeCommentHome", "User", FormMethod.Post))
+                                            {
+                                                <input style="display:none" value="@ViewBag.userID" name="user_liked_id" />
+                                                <input style="display:none" value="@rowComment["user_commented_id"]" name="userCommentedID" />
+                                                <input style="display:none" value="@rowComment["post_id"]" name="postId" />
+                                                <input style="display:none" value="@rowComment["user_posted_id"]" name="userPostedID" />
+                                                <input style="display:none" value="@rowComment["comment_id"]" name="comment_id" />
+
+
+                                                <input id="LikeCommentHome" type="submit" value=" like comment" />
+                                            }
+
+                                        }
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                        i++;
+                    }
+                }
+            </div>
+        }
 
     </div>
 </div>

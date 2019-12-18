@@ -324,6 +324,26 @@ namespace archNoire.Controllers
                     }
                 }
                 ViewBag.comments = comments;
+
+                DataTable pagePosts = pageController.getPagePostsUserLike(id);
+                ViewBag.pagePost = pagePosts;
+
+                // get comments for each page post
+
+                List<DataTable> pageComments = new List<DataTable>(); ;
+
+                if (pagePosts != null)
+                {
+                    foreach (DataRow row in pagePosts.Rows)
+                    {
+                        int pageID = Convert.ToInt32(row["page_id"].ToString());
+                        int postId = Convert.ToInt32(row["page_post_id"].ToString());
+                        DataTable dc = pageController.getPagePostComments(pageID, postId);
+                        pageComments.Add(dc);
+
+                    }
+                }
+                ViewBag.pageComments = pageComments;
                 return View();
             }
             return RedirectToAction("Index", "Login");
@@ -485,7 +505,7 @@ namespace archNoire.Controllers
             DataTable dpage = pageController.getPageById(pageID);
             ViewBag.page = dpage;
             ViewBag.userID = userId;
-            // check if friend with him
+            // check if like with him
             DataTable dt = userController.getIfUserLikePage(userId, pageID);
             if (dt != null && dt.Rows.Count != 0)
             {
@@ -516,7 +536,83 @@ namespace archNoire.Controllers
 
             DataTable devents = pageController.getPageEvents(pageID);
             ViewBag.events = devents;
+
+            DataTable dreviews = pageController.getPageREview(pageID);
+            ViewBag.reviews = dreviews;
+
             return View();
         }
+
+        [HttpPost]
+        public ActionResult likePageComment(int user_liked_id, int postId, int pagePostedID, int userCommentedID, int comment_id)
+        {
+            if (pageController.insertPagePostCommentLike(user_liked_id, userCommentedID, pagePostedID, postId, comment_id) != 0)
+            {
+                // update number of likes
+                DataTable dNoOfLikes = pageController.getNoOfLikesOfPageComment(pagePostedID, postId, comment_id);
+                int noOfLikes = Convert.ToInt32(dNoOfLikes.Rows.Count);
+
+                pageController.updateCommentNoOfLikes(pagePostedID, postId, comment_id, noOfLikes);
+            }
+            return RedirectToAction("PageSearched", new { pageID = pagePostedID });
+        }
+
+        [HttpPost]
+        public ActionResult AddCommentPageSearch(int userID, int postID, int pageID, string text)
+        {
+            pageController.insertPagePostComment(userID, pageID, postID, text, 0);
+
+            return RedirectToAction("PageSearched", new { pageID = pageID });
+        }
+        [HttpPost]
+        public ActionResult likePostPageSearch(int userId, int postId, int pageID)
+        {
+            if (pageController.insertPagePostLike(userId, pageID, postId) != 0)
+            {
+                // update number of likes
+                DataTable dNoOfLikes = pageController.getNoOfLikesOfPagePost(pageID, postId);
+                int noOfLikes = Convert.ToInt32(dNoOfLikes.Rows.Count);
+
+                pageController.updatePostNoOfLikes(pageID, postId, noOfLikes);
+            }
+            return RedirectToAction("PageSearched", new { pageID = pageID });
+        }
+
+        [HttpPost]
+        public ActionResult AddLikePage(int pageID)
+        {
+            pageController.insertPageLike(userId, pageID);
+
+            return RedirectToAction("PageSearched", new { pageID = pageID });
+        }
+        [HttpPost]
+        public ActionResult RemoveLikePage(int pageID)
+        {
+            pageController.DeletePageLike(userId, pageID);
+
+            return RedirectToAction("PageSearched", new { pageID = pageID });
+        }
+
+        [HttpPost]
+        public ActionResult goingToEvent(int userID, int pageID,int eventID)
+        {
+            if (userController.insertGoingToEvent(userID, pageID, eventID) != 0)
+            {
+                // update number of people going to event
+                // get the event
+                DataTable noOfPeopleGoing = pageController.getNoOfGoingToEvent(pageID, eventID);
+
+                int num = noOfPeopleGoing.Rows.Count;
+                pageController.updateEventNoOfLikes(pageID, eventID, num);
+            }
+            return RedirectToAction("PageSearched", new { pageID = pageID });
+        }
+        [HttpPost]
+        public ActionResult AddReview(int userID, int pageID,string text)
+        {
+            pageController.insertPageReview(userID, pageID, text);
+            return RedirectToAction("PageSearched", new { pageID = pageID });
+        }
+
     }
 }

@@ -32,7 +32,7 @@ namespace archNoire.DBControllers
 
         public int insertEventPhoto(int page_id, int event_id, string source)
         {
-            string sql = String.Format("insert into [EVENT_PHOTO] values({0},{1},'{2}'", page_id, event_id, source);
+            string sql = String.Format("insert into [EVENT_PHOTO] values({0},{1},'{2}')", page_id, event_id, source);
             return dBManager.ExecuteNonQuery(sql);
         }
 
@@ -168,7 +168,7 @@ namespace archNoire.DBControllers
         }
         public DataTable getPageById(int pageID)
         {
-            string sql = "select * from dbo.[PAGE] where dbo.[PAGE].page_id = "+pageID;
+            string sql = "select * from dbo.[PAGE] as p left join PAGE_PHOTO as o on o.page_id = p.page_id   where p.page_id = "+pageID;
             return dBManager.ExecuteReader(sql);
         }
         public DataTable getPagePhoto(int id)
@@ -183,7 +183,12 @@ namespace archNoire.DBControllers
         }
         public DataTable getPageEvents(int id)
         {
-            string sql = "select * from dbo.[Event] as e left join EVENT_PHOTO as p on e.event_id = p.event_id where page_id = "+id;
+            string sql = "select * from dbo.[Event] as e left join EVENT_PHOTO as p on e.event_id = p.event_id where e.page_id = "+id;
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getPageEvent(int event_id)
+        {
+            string sql = "select * from dbo.[Event] as e left join EVENT_PHOTO as p on e.event_id = p.event_id where e.event_id = " + event_id;
             return dBManager.ExecuteReader(sql);
         }
         public DataTable getPagePostComments(int page_posted_id, int PostId)
@@ -201,23 +206,43 @@ namespace archNoire.DBControllers
             string sql = "SELECT TOP 1 event_id FROM EVENT ORDER BY event_id DESC;";
             return dBManager.ExecuteReader(sql);
         }
-        public DataTable getNoOfLikesOfUserPost(int page_id, int PostId)
+        public DataTable getNoOfLikesOfPagePost(int page_id, int PostId)
         {
             string sql = "select * from  PAGE_POST_LIKES where page_id = " + page_id + "and  page_post_id = " + PostId;
             return dBManager.ExecuteReader(sql);
         }
+        public DataTable getNoOfGoingToEvent(int page_id, int event_id)
+        {
+            string sql = "select * from  GOING_TO_EVENT where page_id = " + page_id + " and  event_id = " + event_id;
+            return dBManager.ExecuteReader(sql);
+        }
         public DataTable getNoOfLikesOfPageComment(int page_posted_id, int PostId, int commentID)
         {
-            string sql = "select * from  PAGE_POST_COMMENT_LIKES where page_posted_id = " +page_posted_id + "and  page_post_id = " + PostId + " and page_post_comment_id = " + commentID;
+            string sql = "select * from  PAGE_POST_COMMENT_LIKES where page_id = " + page_posted_id + " and  page_post_id = " + PostId + " and page_post_comment_id = " + commentID;
             return dBManager.ExecuteReader(sql);
         }
         public DataTable getPageByName(string name)
         {
-            string sql = "select * from dbo.[PAGE] where dbo.[PAGE].name = '" + name ;
+            string sql = "select * from dbo.[PAGE] where dbo.[PAGE].name = '" + name+"'" ;
             return dBManager.ExecuteReader(sql);
 
         }
 
+        public DataTable getPageREview(int pageID)
+        {
+            string sql = "select * from dbo.[PAGE_REVIEWS] as p join [USER] as u on p.user_id = u.user_id where page_id = " + pageID;
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getNoOfLikesOfUserCommentOnPage(int user_commented_id, int pageID, int page_post_id,int page_post_comment_id)
+        {
+            string sql = "select * from PAGE_POST_COMMENT_LIKES where user_commented_id = " + user_commented_id + "and  page_id = " + pageID + " and page_post_id = " + page_post_id+ " and page_post_comment_id =  "+page_post_comment_id;
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getPagePostsUserLike(int userID)
+        {
+            string sql = "select * from PAGE_POST as p join PAGE_LIKES as l on l.page_id = p.page_id where l.user_id = "+userID;
+            return dBManager.ExecuteReader(sql);
+        }
 
 
 
@@ -227,10 +252,43 @@ namespace archNoire.DBControllers
             string sql = String.Format("update PAGE_POST set no_of_likes = {1} where page_id = {0} and page_post_id = {2} ", page_id, no, post_id);
             return dBManager.ExecuteNonQuery(sql);
         }
+        public int updateEventNoOfLikes(int page_id, int event_id, int no)
+        {
+            string sql = String.Format("update EVENT set no_of_likes = {1} where page_id = {0} and event_id = {2} ", page_id, no, event_id);
+            return dBManager.ExecuteNonQuery(sql);
+        }
         public int updateCommentNoOfLikes(int page_id, int post_id, int comment_id, int no)
         {
             string sql = String.Format("update PAGE_POST_COMMENT set no_of_likes = {1} where page_id = {0} and page_post_id = {2} and page_post_comment_id = {3} ", page_id, no, post_id, comment_id);
             return dBManager.ExecuteNonQuery(sql);
         }
+        // from user 
+      /*  
+       *  public int updateUserInfo(int userID, string name, string bio, string gender, string phone_no, string location, DateTime birth_date, string personal_email, string password)
+        {
+            string sql = String.Format("update [USER] set name ='{0}',bio = '{1}',gender = '{2}' , phone_no = '{3}',location = '{4}',birth_date = '{5}',personal_email='{6}',password='{7}' where user_id = {8} ", name, bio, gender, phone_no, location, birth_date.Date, personal_email, password, userID);
+            return dBManager.ExecuteNonQuery(sql);
+        }
+        public int UpdateUserBio(int user_id, string bio)
+        {
+            string sql = String.Format("update [USER] set bio = '{1}' where user_id = {0} ", user_id, bio);
+            return dBManager.ExecuteNonQuery(sql);
+        }
+        public int UpdateUserPhoto(int user_id, string source)
+        {
+            string sql = String.Format("update USER_PHOTO set source = '{1}' where user_id = {0} ", user_id, source);
+            return dBManager.ExecuteNonQuery(sql);
+        }
+        public int updatePostNoOfLikes(int user_id, int post_id, int no)
+        {
+            string sql = String.Format("update USER_POST set no_of_likes = {1} where user_id = {0} and post_id = {2} ", user_id, no, post_id);
+            return dBManager.ExecuteNonQuery(sql);
+        }
+        public int updateCommentNoOfLikes(int user_id, int post_id, int comment_id, int no)
+        {
+            string sql = String.Format("update USER_POST_COMMENT set no_of_likes = {1} where user_posted_id = {0} and post_id = {2} and comment_id = {3} ", user_id, no, post_id, comment_id);
+            return dBManager.ExecuteNonQuery(sql);
+        }
+        */
     }
 }

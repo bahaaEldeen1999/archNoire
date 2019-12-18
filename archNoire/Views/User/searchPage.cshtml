@@ -44,7 +44,7 @@
             <ul>
                 @foreach (DataRow page in ViewBag.searchedPages.Rows)
                 {
-                    <li><a href="@Url.Action("searchPage", "User", new { pageID = Convert.ToInt32(page["page_id"].ToString()) })">@page["name"].ToString()</a></li>
+                    <li><a href="@Url.Action("PageSearched", "User", new { pageID = Convert.ToInt32(page["page_id"].ToString()) })">@page["name"].ToString()</a></li>
                 }
             </ul>
         </div>

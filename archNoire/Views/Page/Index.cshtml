@@ -130,8 +130,8 @@
             <input id="addPageEvent" type="submit" value="add event" />
         }
 
-    <!--get events-->
-   
+        <!--get events-->
+
         @if (ViewBag.events != null)
         {
             <div class="events">
@@ -161,6 +161,28 @@
                                 </div>
 
                             </div>
+
+                        </div>
+
+                    }
+                }
+            </div>
+        }
+
+      
+        <!--get reviews-->
+
+        @if (ViewBag.reviews != null)
+        {
+            <div class="reviews">
+                @{
+
+                    foreach (DataRow row in ViewBag.reviews.Rows)
+                    {
+                        <div class="review">
+                            <h3> @row["name"].ToString() </h3>
+                            <p> @row["text"].ToString() </p>
+                     
 
                         </div>
 

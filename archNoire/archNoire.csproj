@@ -216,6 +216,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\eventPostPhotos\" />
+    <Folder Include="Images\pagePostPhotos\" />
     <Folder Include="Images\userPostPhotos\" />
     <Folder Include="Images\userProfilePhoto\" />
     <Folder Include="Views\Comment\" />

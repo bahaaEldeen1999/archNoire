@@ -98,6 +98,9 @@ namespace archNoire.Controllers
 
                 DataTable devents = pageController.getPageEvents(pageId);
                 ViewBag.events = devents;
+                DataTable dreviews = pageController.getPageREview(pageId);
+                ViewBag.reviews = dreviews;
+
                 return View();
             }
             return RedirectToAction("Index", "LogIn");
@@ -358,7 +361,7 @@ namespace archNoire.Controllers
                     eventPhoto.SaveAs(path);
                     //ViewBag.Message = "image updated successfully";
                     // ViewBag.imageSource = "../Images/userProfilePhoto/" + postPhoto.FileName;
-                    string eventPhotoURL = "../../Images/pagePostPhotos/" + eventPhoto.FileName;
+                    string eventPhotoURL = "../../Images/eventPostPhotos/" + eventPhoto.FileName;
                     // get user post ID
                     DataTable dPost = pageController.getLastInsertedEvent();
                     int eventID = Convert.ToInt32(dPost.Rows[0]["event_id"].ToString());

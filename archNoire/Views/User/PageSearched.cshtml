@@ -1,5 +1,10 @@
-﻿
+﻿@model archNoire.Models.Page
+ @using System.Data;
+@{
+    Layout = "";
+}
 @Html.Partial("_userNavBar", null, new ViewDataDictionary { { "id", @ViewBag.userID } })
+
 <style>
     .row {
         padding: 20px;
@@ -19,39 +24,142 @@
 </style>
 
 
-<h2>page searched profile</h2>
+<h2>user searched profile</h2>
 
 
 <div class="row">
     <div class="col col-md-2">
         <img src="" alt="profile picture" />
-        <button> like ( if not liked)</button>
-        <h3>name</h3>
-        <p>info</p>
-        <h4>phone no</h4>
-        <h4>location</h4>
-        
-        <h4>email</h4>
+        @if (@ViewBag.like)
+        {
+            using (Html.BeginForm("RemoveLikePage", "User", FormMethod.Post))
+            {
+
+                <input value="@Convert.ToInt32(ViewBag.page.Rows[0]["page_id"].ToString())" style="display:none" name="pageID" />
+                <input id="RemoveLikePage" type="submit" value="remove like page" />
+            }
+        }
+        else
+        {
+            using (Html.BeginForm("AddLikePage", "User", FormMethod.Post))
+            {
+
+                <input value="@Convert.ToInt32(ViewBag.page.Rows[0]["page_id"].ToString())" style="display:none" name="pageID" />
+                <input id="AddLikePage" type="submit" value="add like page" />
+            }
+        }
+        <h3>@ViewBag.page.Rows[0]["name"].ToString()</h3>
+        <p>@ViewBag.page.Rows[0]["info"].ToString()</p>
+        <h4>@ViewBag.page.Rows[0]["phone_no"].ToString()</h4>
+        <h4>@ViewBag.page.Rows[0]["location"].ToString()</h4>
+        <h4>@ViewBag.page.Rows[0]["business_email"].ToString()</h4>
 
     </div>
-    <div class="col col-md-8">
+    <div class="col col-md-5">
+
+        @using (Html.BeginForm("AddPost", "Page", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.TextBoxFor(EventAndPost => EventAndPost.Post.text, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "text" })
+            @Html.TextBoxFor(EventAndPost => EventAndPost.Post.location, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "location" })
+
+
+            <h2>upload postPhoto</h2>
+
+            <br />
+
+            <input type="file" name="postPhoto" id="pagePostPhoto" />
+
+            <input id="addPagePost" type="submit" value="add post" />
+        }
+        <!--get posts-->
         <h2>wall</h2>
-        <div class="post">
+        @if (ViewBag.posts != null)
+        {
+            <div class="posts">
+                @{
+                    int i = 0;
+                    foreach (DataRow row in ViewBag.posts.Rows)
+                    {
+                        <div class="post">
 
-            <div class="thumbnail">
-                <div class="caption">
-                    <h3>Thumbnail label</h3>
-                    <p>text</p>
-                    <p></p>
-                </div>
-                <img src="" alt="" class="post-img">
-                <div class="icons">
-                    <a href="@Url.Action("LikePost","Post")"> <i class="fa fa-thumbs-up"></i> like</a>
-                    <a href="@Url.Action("ShowComments","Comment")"> <i class="fa fa fa-commenting"></i> comment</a>
-                </div>
+                            <div class="thumbnail">
+                                @if (row["source"] != null)
+                                {
+                                    <img src="@row["source"].ToString()" style="border-radius:0;width:300px" />
+                                }
+                                <div class="caption">
+
+                                    <p>@row["text"].ToString()</p>
+                                    <p>@row["location"].ToString()</p>
+                                    <p>@row["date"].ToString()</p>
+                                </div>
+
+                                <div class="icons">
+
+                                    <i class="fa fa-thumbs-up"></i> like @row["no_of_likes"].ToString()
+
+                                </div>
+                                @if (ViewBag.comments[i] != null)
+                                {
+                                    <div class="comments">
+                                        @foreach (DataRow rowComment in ViewBag.comments[i].Rows)
+                                        {
+                                            <p>@rowComment["text"].ToString()</p>
+                                            <p>no of likes @rowComment["no_of_likes"].ToString()</p>
+
+
+                                        }
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                        i++;
+                    }
+                }
             </div>
+        }
 
-        </div>
+    </div>
+  
+    <!--get events-->
+    <div class="col col-md-5">
+        @if (ViewBag.events != null)
+        {
+            <div class="events">
+                @{
+
+                    foreach (DataRow row in ViewBag.events.Rows)
+                    {
+                        <div class="event">
+
+                            <div class="thumbnail">
+                                @if (row["source"] != null)
+                                {
+                                    <img src="@row["source"].ToString()" style="border-radius:0;width:300px" />
+                                }
+                                <div class="caption">
+
+                                    <p>@row["ticket_price"].ToString()</p>
+                                    <p>@row["location"].ToString()</p>
+
+                                    <p>@row["date"].ToString()</p>
+                                </div>
+
+                                <div class="icons">
+
+                                    <i class="fa fa-thumbs-up"></i> like @row["no_of_people_going"].ToString()
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    }
+                }
+            </div>
+        }
 
     </div>
 </div>

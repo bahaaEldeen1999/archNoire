@@ -28,6 +28,7 @@ namespace archNoire.Controllers
         static private string userPhoto;
 
          static UserDBController userController = new UserDBController();
+         static PageDBController pageController = new PageDBController();
         [HttpPost]
         public ActionResult Index(User user)
         {
@@ -350,13 +351,13 @@ namespace archNoire.Controllers
         public ActionResult SearchPage(User user)
         {
             ViewBag.userID = userId;
-           // ViewBag.searchName = user.searchedUser;
-            //int[] searchIDS = { 1, 2, 3, 4, 6, 7, 8, 9, 2, 21, 12 };
-            //ViewBag.usersSearchedID = searchIDS;
 
             // get users
-            DataTable dt = userController.getUserFromName(user.searchedUser);
-            ViewBag.searchedUsers = dt;
+            DataTable dusers = userController.getUserFromName(user.searchedUser);
+            ViewBag.searchedUsers = dusers;
+            // get pages 
+            DataTable dpages = pageController.getPageByName(user.searchedUser);
+            ViewBag.searchedPages = dpages;
             return View();
         }
         [HttpPost]
@@ -479,6 +480,43 @@ namespace archNoire.Controllers
             return RedirectToAction("Home", new { id = userId });
         }
 
+        public ActionResult PageSearched(int pageID)
+        {
+            DataTable dpage = pageController.getPageById(pageID);
+            ViewBag.page = dpage;
+            ViewBag.userID = userId;
+            // check if friend with him
+            DataTable dt = userController.getIfUserLikePage(userId, pageID);
+            if (dt != null && dt.Rows.Count != 0)
+            {
+                ViewBag.like = true;
+            }
+            else
+            {
+                ViewBag.like = false;
+            }
+            // get page posts
+            DataTable dpagePosts = pageController.getPagePosts(pageID);
+            ViewBag.posts = dpagePosts;
+            List<DataTable> comments = new List<DataTable>(); ;
+            
 
+            if (dpagePosts != null)
+            {
+                foreach (DataRow row in dpagePosts.Rows)
+                {
+                   
+                    int postId = Convert.ToInt32(row["page_post_id"].ToString());
+                    DataTable dc = pageController.getPagePostComments(pageID, postId);
+                    comments.Add(dc);
+
+                }
+            }
+            ViewBag.comments = comments;
+
+            DataTable devents = pageController.getPageEvents(pageID);
+            ViewBag.events = devents;
+            return View();
+        }
     }
 }

@@ -212,5 +212,10 @@ namespace archNoire.DBControllers
             string sql = "SELECT TOP 1 post_id FROM USER_POST ORDER BY post_id DESC;";
             return dBManager.ExecuteReader(sql);
         }
+        public DataTable getIfUserLikePage(int userID, int pageID)
+        {
+            string sql = "select * from dbo.[PAGE_LIKES] where user_id=" + userID + " and page_id = " + pageID  ;
+            return dBManager.ExecuteReader(sql);
+        }
     }
 }

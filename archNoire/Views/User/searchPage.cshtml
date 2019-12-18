@@ -38,6 +38,17 @@
             </ul>
         </div>
     }
+    @if (ViewBag.searchedPages != null)
+    {
+        <div class="col-md-12">
+            <ul>
+                @foreach (DataRow page in ViewBag.searchedPages.Rows)
+                {
+                    <li><a href="@Url.Action("searchPage", "User", new { pageID = Convert.ToInt32(page["page_id"].ToString()) })">@page["name"].ToString()</a></li>
+                }
+            </ul>
+        </div>
+    }
 </div>
 
 

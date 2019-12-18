@@ -95,6 +95,9 @@ namespace archNoire.Controllers
                     }
                 }
                 ViewBag.comments = comments;
+
+                DataTable devents = pageController.getPageEvents(pageId);
+                ViewBag.events = devents;
                 return View();
             }
             return RedirectToAction("Index", "LogIn");
@@ -296,10 +299,10 @@ namespace archNoire.Controllers
 
 
         [HttpPost]
-        public ActionResult addPost(Post post, HttpPostedFileBase postPhoto)
+        public ActionResult addPost(EventAndPost e, HttpPostedFileBase postPhoto)
         {
-            string postText = post.text;
-            string postLocation = post.location;
+            string postText = e.Post.text;
+            string postLocation = e.Post.location;
             DateTime date = DateTime.Now;
             // insert post to db 
              pageController.insertPagePost(pageId,  date, postLocation, 0, postText);
@@ -336,40 +339,46 @@ namespace archNoire.Controllers
 
 
 
+    
         [HttpPost]
-        public ActionResult AddComment(int pageID, int postID, int pagePostedID, string text)
+        public ActionResult AddEvent(EventAndPost e, HttpPostedFileBase eventPhoto)
         {
-            pageController.insertPagePostComment(pagePostedID, postID, pageID, text, 0);
-
-            return RedirectToAction("Index", new { id = pageId });
-        }
-
-        [HttpPost]
-        public ActionResult likePostWall(int pageId, int postId, int pagePostedID)
-        {
-            if (pageController.insertPagePostLike(pagePostedID, pageId, postId) != 0)
+            string eventLocation = e.Event.location;
+            int eventPrice = e.Event.price;
+            DateTime eventDate = e.Event.date;
+            // insert post to db 
+            pageController.insertEvent(pageId, eventDate, eventLocation, eventPrice, 0);
+            // check if post has photo
+            if (eventPhoto != null && eventPhoto.ContentLength > 0)
             {
-                // update number of likes
-                DataTable dNoOfLikes = pageController.getNoOfLikesOfUserPost(pagePostedID, postId);
-                int noOfLikes = Convert.ToInt32(dNoOfLikes.Rows.Count);
-
-                pageController.updatePostNoOfLikes(pagePostedID, postId, noOfLikes);
+                try
+                {
+                    string path = Path.Combine(Server.MapPath("../Images/eventPostPhotos"),
+                    Path.GetFileName(eventPhoto.FileName));
+                    eventPhoto.SaveAs(path);
+                    //ViewBag.Message = "image updated successfully";
+                    // ViewBag.imageSource = "../Images/userProfilePhoto/" + postPhoto.FileName;
+                    string eventPhotoURL = "../../Images/pagePostPhotos/" + eventPhoto.FileName;
+                    // get user post ID
+                    DataTable dPost = pageController.getLastInsertedEvent();
+                    int eventID = Convert.ToInt32(dPost.Rows[0]["event_id"].ToString());
+                    // inser post  photo
+                    pageController.insertEventPhoto(pageId, eventID, eventPhotoURL);
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = "please choose a valid file";
+                }
             }
-            return RedirectToAction("Index", new { id = pageId });
-        }
-        [HttpPost]
-        public ActionResult likeComment(int page_liked_id, int postId, int pagePostedID, int userCommentedID, int comment_id)
-        {
-            if (pageController.insertPagePostCommentLike(pagePostedID, userCommentedID, pagePostedID, postId , comment_id) != 0)
+            else
             {
-                // update number of likes
-                DataTable dNoOfLikes = pageController.getNoOfLikesOfPageComment(pagePostedID, postId, comment_id);
-                int noOfLikes = Convert.ToInt32(dNoOfLikes.Rows.Count);
-
-                pageController.updateCommentNoOfLikes(pagePostedID, postId, comment_id, noOfLikes);
+                ViewBag.Message = "You have not specified a file.";
             }
+
             return RedirectToAction("Index", new { id = pageId });
+
         }
+
 
     }
 }

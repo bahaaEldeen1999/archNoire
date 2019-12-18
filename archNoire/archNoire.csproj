@@ -135,6 +135,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Admin.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\EventAndPost.cs" />
     <Compile Include="Models\Page.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Models\User.cs" />
@@ -213,6 +215,7 @@
     <Content Include="Views\Page\initialSignUp.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Images\eventPostPhotos\" />
     <Folder Include="Images\userPostPhotos\" />
     <Folder Include="Images\userProfilePhoto\" />
     <Folder Include="Views\Comment\" />

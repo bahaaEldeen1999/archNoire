@@ -24,15 +24,15 @@ namespace archNoire.DBControllers
             return dBManager.ExecuteNonQuery(sql);
         }
 
-        public int insertEvent(int page_id, int event_id, string date, string location, int ticket_price, int no_of_people_going)
+        public int insertEvent(int page_id, DateTime date, string location, int ticket_price, int no_of_people_going)
         {
-            string sql = String.Format("insert into [EVENT] values({0},{1},'{2}','{3}',{4},{5})", page_id, event_id, date, location, ticket_price, no_of_people_going);
+            string sql = String.Format("insert into [EVENT] values({0},'{1}','{2}',{3},{4})", page_id, date.Date, location, ticket_price, no_of_people_going);
             return dBManager.ExecuteNonQuery(sql);
         }
 
-        public int insertEventPhoto(int page_id, int event_id, int event_photo_id, string source)
+        public int insertEventPhoto(int page_id, int event_id, string source)
         {
-            string sql = String.Format("insert into [EVENT_PHOTO] values({0},{1},{2},'{3}'", page_id, event_id, event_photo_id, source);
+            string sql = String.Format("insert into [EVENT_PHOTO] values({0},{1},'{2}'", page_id, event_id, source);
             return dBManager.ExecuteNonQuery(sql);
         }
 
@@ -166,6 +166,11 @@ namespace archNoire.DBControllers
             string sql = "select * from dbo.[PAGE] where dbo.[PAGE].business_email = '" + email + "' and dbo.[PAGE].password ='" + password + "'";
             return dBManager.ExecuteReader(sql);
         }
+        public DataTable getPageById(int pageID)
+        {
+            string sql = "select * from dbo.[PAGE] where dbo.[PAGE].page_id = "+pageID;
+            return dBManager.ExecuteReader(sql);
+        }
         public DataTable getPagePhoto(int id)
         {
             string sql = "select * from dbo.[PAGE_PHOTO] where page_id = " + id;
@@ -174,6 +179,11 @@ namespace archNoire.DBControllers
         public DataTable getPagePosts(int id)
         {
             string sql = "select * from dbo.[PAGE_POST] as u left join PAGE_POST_PHOTO as p on u.page_id = p.page_id and u.page_post_id = p.page_post_id  where u.page_id =" + id;
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getPageEvents(int id)
+        {
+            string sql = "select * from dbo.[Event] as e left join EVENT_PHOTO as p on e.event_id = p.event_id where page_id = "+id;
             return dBManager.ExecuteReader(sql);
         }
         public DataTable getPagePostComments(int page_posted_id, int PostId)
@@ -186,6 +196,11 @@ namespace archNoire.DBControllers
             string sql = "SELECT TOP 1 page_post_id FROM PAGE_POST ORDER BY page_post_id DESC;";
             return dBManager.ExecuteReader(sql);
         }
+        public DataTable getLastInsertedEvent()
+        {
+            string sql = "SELECT TOP 1 event_id FROM EVENT ORDER BY event_id DESC;";
+            return dBManager.ExecuteReader(sql);
+        }
         public DataTable getNoOfLikesOfUserPost(int page_id, int PostId)
         {
             string sql = "select * from  PAGE_POST_LIKES where page_id = " + page_id + "and  page_post_id = " + PostId;
@@ -195,6 +210,12 @@ namespace archNoire.DBControllers
         {
             string sql = "select * from  PAGE_POST_COMMENT_LIKES where page_posted_id = " +page_posted_id + "and  page_post_id = " + PostId + " and page_post_comment_id = " + commentID;
             return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getPageByName(string name)
+        {
+            string sql = "select * from dbo.[PAGE] where dbo.[PAGE].name = '" + name ;
+            return dBManager.ExecuteReader(sql);
+
         }
 
 

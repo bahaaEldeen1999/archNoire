@@ -4,6 +4,7 @@
     Layout = "";
 
 }
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,11 +19,30 @@
             padding: 0;
             margin: 0;
         }
+        .btn {
+            background: white;
+            border: 1px solid black;
+            color: black;
+            outline: 1px solid white
+        }
+
+            .btn:hover {
+                background: black;
+                border: 1px solid white;
+                color: white;
+                outline: 1px solid black
+            }
+            form{
+                display:inline;
+            }
+            a{
+                color:black !important;
+            }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default" style="background-color:transparent;color:black">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -45,10 +65,9 @@
 
                 @using (Html.BeginForm("SearchPage", "User", FormMethod.Get))
                 {
-                    <div class="form-group">
-                        @Html.TextBoxFor(User => User.searchedUser, new { @type = "text", @class = "form-control", @required = "true" })
-                    </div>
-                    <input id="searchUser" type="submit" value="search" />
+                        @Html.TextBoxFor(User => User.searchedUser, new { @type = "text", @class = "form-control", @required = "true" ,@style = "float:left;margin-top:5px;margin-right:10px"})
+                   
+                    <input id="searchUser" type="submit" value="search" class="btn" style="margin-top:5px" />
                 }
 
                 <ul class="nav navbar-nav navbar-right">
@@ -56,8 +75,12 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">more <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="@Url.Action("userSetting","User",new { id=userId})">setting</a></li>
-                            <li><a href="@Url.Action("Index","Home")">log out</a></li>
+                            <li style="text-align:center"><a href="@Url.Action("userSetting","User",new { id=userId})">setting</a></li>
+                            @using (Html.BeginForm("LogOut", "User", FormMethod.Post))
+                            {
+                             <input type="submit" value="logout" class="btn" style="width:100%;display:inline-block"/>
+                            }
+
 
                         </ul>
                     </li>

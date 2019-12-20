@@ -97,8 +97,12 @@ namespace archNoire.Controllers
                     }
                 }
                 ViewBag.comments = comments;
+                // get events user is going to
+                DataTable devents = userController.getEventsUserGoingTo(userId);
+                ViewBag.events = devents;
                 return View();
             }
+     
             return RedirectToAction("Index", "LogIn");
 
         }
@@ -112,9 +116,16 @@ namespace archNoire.Controllers
             string gender = user.gender;
             DateTime birth_date = user.birth_date;
             string email = user.email;
+            // check email no used
+            DataTable duserEmails = userController.getUserByEmail(email);
+            if(duserEmails != null)
+            {
+                // email in use
+                return false;
+            }
             if (password == check_password)
             {
-                if (password.Length < 1)
+                if (password.Length < 8)
                 {
                     ViewBag.message = "Invalid Password! (i.e. lessthan 8 characters)";
                     return false;
@@ -350,35 +361,44 @@ namespace archNoire.Controllers
         }
         public ActionResult UserSearched(int id)
         {
-            ViewBag.userSearchedID = id;
-            ViewBag.userID = userId;
-            // check if friend with him
-            DataTable dt = userController.getIfUserIsFriend(userId, id);
-            if(dt != null && dt.Rows.Count != 0)
+            if (isLogged)
             {
-                ViewBag.friend = true;
-            }
-            else
-            {
-                ViewBag.friend = false;
-            }
-            // get user2 info 
-            DataTable dUser2 = userController.getUserInfoFromId(id);
-            ViewBag.user2 = dUser2;
+                ViewBag.userSearchedID = id;
+                ViewBag.userID = userId;
+                // check if friend with him
+                DataTable dt = userController.getIfUserIsFriend(userId, id);
+                if (dt != null && dt.Rows.Count != 0)
+                {
+                    ViewBag.friend = true;
+                }
+                else
+                {
+                    ViewBag.friend = false;
+                }
+                // get user2 info 
+                DataTable dUser2 = userController.getUserInfoFromId(id);
+                ViewBag.user2 = dUser2;
 
-            return View();
+                return View();
+            }
+            return RedirectToAction("Index", "Login");
         }
         public ActionResult SearchPage(User user)
         {
-            ViewBag.userID = userId;
 
-            // get users
-            DataTable dusers = userController.getUserFromName(user.searchedUser);
-            ViewBag.searchedUsers = dusers;
-            // get pages 
-            DataTable dpages = pageController.getPageByName(user.searchedUser);
-            ViewBag.searchedPages = dpages;
-            return View();
+            if (isLogged)
+            {
+                ViewBag.userID = userId;
+
+                // get users
+                DataTable dusers = userController.getUserFromName(user.searchedUser);
+                ViewBag.searchedUsers = dusers;
+                // get pages 
+                DataTable dpages = pageController.getPageByName(user.searchedUser);
+                ViewBag.searchedPages = dpages;
+                return View();
+            }
+            return RedirectToAction("Index", "Login");
         }
         [HttpPost]
         public ActionResult addPost(Post post, HttpPostedFileBase postPhoto)
@@ -502,45 +522,49 @@ namespace archNoire.Controllers
 
         public ActionResult PageSearched(int pageID)
         {
-            DataTable dpage = pageController.getPageById(pageID);
-            ViewBag.page = dpage;
-            ViewBag.userID = userId;
-            // check if like with him
-            DataTable dt = userController.getIfUserLikePage(userId, pageID);
-            if (dt != null && dt.Rows.Count != 0)
+            if (isLogged)
             {
-                ViewBag.like = true;
-            }
-            else
-            {
-                ViewBag.like = false;
-            }
-            // get page posts
-            DataTable dpagePosts = pageController.getPagePosts(pageID);
-            ViewBag.posts = dpagePosts;
-            List<DataTable> comments = new List<DataTable>(); ;
-            
-
-            if (dpagePosts != null)
-            {
-                foreach (DataRow row in dpagePosts.Rows)
+                DataTable dpage = pageController.getPageById(pageID);
+                ViewBag.page = dpage;
+                ViewBag.userID = userId;
+                // check if like with him
+                DataTable dt = userController.getIfUserLikePage(userId, pageID);
+                if (dt != null && dt.Rows.Count != 0)
                 {
-                   
-                    int postId = Convert.ToInt32(row["page_post_id"].ToString());
-                    DataTable dc = pageController.getPagePostComments(pageID, postId);
-                    comments.Add(dc);
-
+                    ViewBag.like = true;
                 }
+                else
+                {
+                    ViewBag.like = false;
+                }
+                // get page posts
+                DataTable dpagePosts = pageController.getPagePosts(pageID);
+                ViewBag.posts = dpagePosts;
+                List<DataTable> comments = new List<DataTable>(); ;
+
+
+                if (dpagePosts != null)
+                {
+                    foreach (DataRow row in dpagePosts.Rows)
+                    {
+
+                        int postId = Convert.ToInt32(row["page_post_id"].ToString());
+                        DataTable dc = pageController.getPagePostComments(pageID, postId);
+                        comments.Add(dc);
+
+                    }
+                }
+                ViewBag.comments = comments;
+
+                DataTable devents = pageController.getPageEvents(pageID);
+                ViewBag.events = devents;
+
+                DataTable dreviews = pageController.getPageREview(pageID);
+                ViewBag.reviews = dreviews;
+
+                return View();
             }
-            ViewBag.comments = comments;
-
-            DataTable devents = pageController.getPageEvents(pageID);
-            ViewBag.events = devents;
-
-            DataTable dreviews = pageController.getPageREview(pageID);
-            ViewBag.reviews = dreviews;
-
-            return View();
+            return RedirectToAction("Index", "Login");
         }
 
         [HttpPost]
@@ -647,6 +671,12 @@ namespace archNoire.Controllers
             pageController.insertPagePostComment(user_added_comment, pagePostedID, postID, text, 0);
 
             return RedirectToAction("Home", new { id = userId });
+        }
+        [HttpPost]
+        public ActionResult LogOut()
+        {
+            isLogged = false;
+            return RedirectToAction("Index", "LogIn");
         }
     }
 }

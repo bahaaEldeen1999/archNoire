@@ -254,7 +254,7 @@ namespace archNoire.DBControllers
         }
         public int updateEventNoOfLikes(int page_id, int event_id, int no)
         {
-            string sql = String.Format("update EVENT set no_of_likes = {1} where page_id = {0} and event_id = {2} ", page_id, no, event_id);
+            string sql = String.Format("update EVENT set no_of_people_going = {1} where page_id = {0} and event_id = {2} ", page_id, no, event_id);
             return dBManager.ExecuteNonQuery(sql);
         }
         public int updateCommentNoOfLikes(int page_id, int post_id, int comment_id, int no)

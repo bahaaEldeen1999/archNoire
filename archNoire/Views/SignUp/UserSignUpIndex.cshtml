@@ -14,6 +14,10 @@
     .container {
         text-align: center
     }
+    .radio{
+        margin:0;
+        display:inline-block
+    }
 </style>
 <div class="container">
     <div class="row">
@@ -29,7 +33,10 @@
                 @Html.TextBoxFor(UserAndPage => UserAndPage.user.password, new { @class = "form-control", @type = "password", @required = "true", @placeholder = "password" })
                 @Html.TextBoxFor(UserAndPage => UserAndPage.user.check_password, new { @class = "form-control", @type = "password", @required = "true", @placeholder = "confirm password" })
 
-                @Html.TextBoxFor(UserAndPage => UserAndPage.user.gender, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "gender" })
+                <label>male : </label>
+                @Html.RadioButtonFor(UserAndPage => UserAndPage.user.gender, "Male", new { @class = "radio" })
+                <label>  female : </label>
+                @Html.RadioButtonFor(UserAndPage => UserAndPage.user.gender, "Female", new { @class = "radio" })
                 @Html.TextBoxFor(UserAndPage => UserAndPage.user.location, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "location" })
 
                 @Html.TextBoxFor(UserAndPage => UserAndPage.user.birth_date, new { @class = "form-control", @type = "date", @required = "true" })

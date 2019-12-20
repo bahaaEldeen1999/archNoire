@@ -42,8 +42,8 @@
 
             @using (Html.BeginForm("Index", "Page", FormMethod.Post))
             {
-                @Html.TextBoxFor(UserAndPage => UserAndPage.page.email, new { @type = "email", @class = "form-control", @required = "true" })
-                @Html.TextBoxFor(UserAndPage => UserAndPage.page.password, new { @class = "form-control", @type = "password", @required = "true" })
+                @Html.TextBoxFor(UserAndPage => UserAndPage.page.email, new { @type = "email", @class = "form-control", @required = "true", @placeholder = "email" })
+                @Html.TextBoxFor(UserAndPage => UserAndPage.page.password, new { @class = "form-control", @type = "password", @required = "true", @placeholder = "password" })
                 <input id="PageSubmit" type="submit" value="Page Login" class="btn" />
             }
         </div>

@@ -156,6 +156,11 @@ namespace archNoire.DBControllers
             string sql = "select * from dbo.[USER] where dbo.[USER].personal_email = '" + email + "' and dbo.[USER].password ='" + password + "'";
             return dBManager.ExecuteReader(sql);
         }
+        public DataTable getUserByEmail(string email)
+        {
+            string sql = "select * from dbo.[USER] where dbo.[USER].personal_email = '" + email + "' ";
+            return dBManager.ExecuteReader(sql);
+        }
         public DataTable getUserPhoto(int id)
         {
             string sql = "select * from dbo.[USER_PHOTO] where user_id = " +id;
@@ -163,7 +168,7 @@ namespace archNoire.DBControllers
         }
         public DataTable getUserPosts(int id)
         {
-            string sql = "select * from dbo.[USER_POST] as u left join USER_POST_PHOTO as p on u.user_id = p.user_id and u.post_id = p.post_id  where u.user_id =" + id;
+            string sql = "select *   from dbo.[USER_POST] as u left join USER_POST_PHOTO as p on u.user_id = p.user_id and u.post_id = p.post_id  join [USER] as g on g.user_id = u.user_id join USER_PHOTO as d on d.user_id = u.user_id  where u.user_id =" + id;
             return dBManager.ExecuteReader(sql);
         }
 
@@ -215,6 +220,11 @@ namespace archNoire.DBControllers
         public DataTable getIfUserLikePage(int userID, int pageID)
         {
             string sql = "select * from dbo.[PAGE_LIKES] where user_id=" + userID + " and page_id = " + pageID  ;
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getEventsUserGoingTo(int userID)
+        {
+            string sql = "select * from dbo.[GOING_TO_EVENT] as g join EVENT as e on e.event_id = g.event_id left join EVENT_PHOTO as p on p.event_id = g.event_id where g.user_id=" + userID + " ";
             return dBManager.ExecuteReader(sql);
         }
     }

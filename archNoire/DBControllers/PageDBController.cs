@@ -178,22 +178,22 @@ namespace archNoire.DBControllers
         }
         public DataTable getPagePosts(int id)
         {
-            string sql = "select * from dbo.[PAGE_POST] as u left join PAGE_POST_PHOTO as p on u.page_id = p.page_id and u.page_post_id = p.page_post_id  where u.page_id =" + id;
+            string sql = "select * from dbo.[PAGE_POST] as u left join PAGE_POST_PHOTO as p on u.page_id = p.page_id and u.page_post_id = p.page_post_id join [PAGE] as g on g.page_id = u.page_id left join PAGE_PHOTO as d on d.page_id = u.page_id  where u.page_id =" + id;
             return dBManager.ExecuteReader(sql);
         }
         public DataTable getPageEvents(int id)
         {
-            string sql = "select * from dbo.[Event] as e left join EVENT_PHOTO as p on e.event_id = p.event_id where e.page_id = "+id;
+            string sql = "select * from dbo.[Event] as e left join EVENT_PHOTO as p on e.event_id = p.event_id join [PAGE] as g on g.page_id = e.page_id left join PAGE_PHOTO as d on d.page_id = e.page_id where e.page_id = " + id;
             return dBManager.ExecuteReader(sql);
         }
         public DataTable getPageEvent(int event_id)
         {
-            string sql = "select * from dbo.[Event] as e left join EVENT_PHOTO as p on e.event_id = p.event_id where e.event_id = " + event_id;
+            string sql = "select * from dbo.[Event] as e left join EVENT_PHOTO as p on e.event_id = p.event_id join [PAGE] as g on g.page_id = e.page_id left join PAGE_PHOTO as d on d.page_id = e.page_id where e.event_id = " + event_id;
             return dBManager.ExecuteReader(sql);
         }
         public DataTable getPagePostComments(int page_posted_id, int PostId)
         {
-            string sql = "select * from  PAGE_POST_COMMENT where page_id = " + page_posted_id + " and  page_post_id = " + PostId;
+            string sql = "select * from  PAGE_POST_COMMENT as c join [USER] as u on c.user_commented_id = u.user_id left join USER_PHOTO as ph on ph.user_id = u.user_id   where c.page_id = " + page_posted_id + " and  c.page_post_id = " + PostId;
             return dBManager.ExecuteReader(sql);
         }
         public DataTable getLastInsertedPost()
@@ -230,7 +230,7 @@ namespace archNoire.DBControllers
 
         public DataTable getPageREview(int pageID)
         {
-            string sql = "select * from dbo.[PAGE_REVIEWS] as p join [USER] as u on p.user_id = u.user_id where page_id = " + pageID;
+            string sql = "select * from dbo.[PAGE_REVIEWS] as p join [USER] as u on p.user_id = u.user_id left join USER_PHOTO as ph on ph.user_id = u.user_id where page_id = " + pageID;
             return dBManager.ExecuteReader(sql);
         }
         public DataTable getNoOfLikesOfUserCommentOnPage(int user_commented_id, int pageID, int page_post_id,int page_post_comment_id)
@@ -240,11 +240,16 @@ namespace archNoire.DBControllers
         }
         public DataTable getPagePostsUserLike(int userID)
         {
-            string sql = "select * from PAGE_POST as p join PAGE_LIKES as l on l.page_id = p.page_id left join PAGE_POST_PHOTO as i on i.page_post_id = p.page_post_id where l.user_id = "+userID;
+            string sql = "select * from PAGE_POST as p join PAGE_LIKES as l on l.page_id = p.page_id left join PAGE_POST_PHOTO as i on i.page_post_id = p.page_post_id join PAGE as q on q.page_id = p.page_id join PAGE_PHOTO as ph on ph.page_id = p.page_id where l.user_id = "+userID;
             return dBManager.ExecuteReader(sql);
         }
 
+        public DataTable getPageByEmail(string email)
+        {
+            string sql = "select * from dbo.[PAGE] where dbo.[PAGE].business_email = '" + email + "'";
+            return dBManager.ExecuteReader(sql);
 
+        }
 
         // updates
         public int updatePostNoOfLikes(int page_id, int post_id, int no)

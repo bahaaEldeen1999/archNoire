@@ -146,7 +146,7 @@ namespace archNoire.DBControllers
 
         public int DeleteFriend(int user1_id, int user2_id)
         {
-            string sql = "DELETE FROM FRIENDS WHERE (user1_id = " + user1_id + " AND user2_id = " + user2_id + ") or (user1_id = " + user2_id + " AND user2_id = " + user1_id + ")";
+            string sql = "DELETE FROM FRIENDS WHERE (user1_id = " + user1_id + " AND user2_id = " + user2_id + ") ";
             return dBManager.ExecuteNonQuery(sql);
         }
 
@@ -168,7 +168,7 @@ namespace archNoire.DBControllers
         }
         public DataTable getUserPosts(int id)
         {
-            string sql = "select *   from dbo.[USER_POST] as u left join USER_POST_PHOTO as p on u.user_id = p.user_id and u.post_id = p.post_id  join [USER] as g on g.user_id = u.user_id join USER_PHOTO as d on d.user_id = u.user_id  where u.user_id =" + id;
+            string sql = "select *   from dbo.[USER_POST] as u left join USER_POST_PHOTO as p on u.user_id = p.user_id and u.post_id = p.post_id  join [USER] as g on g.user_id = u.user_id left join USER_PHOTO as d on d.user_id = u.user_id  where u.user_id =" + id;
             return dBManager.ExecuteReader(sql);
         }
 
@@ -184,7 +184,7 @@ namespace archNoire.DBControllers
         }
         public DataTable getIfUserIsFriend(int user1ID,int user2ID)
         {
-            string sql = "select * from dbo.[FRIENDS] where (user1_id=" + user1ID + " and user2_id = "+user2ID+ " )or (user1_id = "+user2ID+ " and user2_id = "+ user1ID + ") ";
+            string sql = "select * from dbo.[FRIENDS] where (user1_id=" + user1ID + " and user2_id = "+user2ID+ " ) ";
             return dBManager.ExecuteReader(sql);
         }
         public DataTable getNoOfLikesOfUserPost(int userID, int PostId)
@@ -199,12 +199,12 @@ namespace archNoire.DBControllers
         }
         public DataTable getPostComments(int user_posted_id, int PostId)
         {
-            string sql = "select * from  USER_POST_COMMENT where user_posted_id = " + user_posted_id + " and  post_id = " + PostId;
+            string sql = "select * from  USER_POST_COMMENT as c join [USER] as u on c.user_commented_id = u.user_id  left join USER_PHOTO as ph on ph.user_id = u.user_id where c.user_posted_id = " + user_posted_id + " and  c.post_id = " + PostId;
             return dBManager.ExecuteReader(sql);
         }
         public DataTable getFriendsAndUsersPosts(int userID)
         {
-            string sql = "select  * from USER_POST as f join FRiENDS on user1_id = "+userID+ " or user2_id = "+ userID + " left join USER_POST_PHOTO as p on p.post_id = f.post_id  where f.user_id = user1_id or f.user_id = user2_id ";
+            string sql = "select * from[archNoire].[dbo].[USER_POST] as f  join[archNoire].[dbo].[FRiENDS] on f.user_id = user2_id left join[archNoire].[dbo].[USER_POST_PHOTO] as p on p.post_id = f.post_id join[archNoire].[dbo].[USER] as k on k.user_id = user2_id left join[archNoire].[dbo].[USER_PHOTO] as h on h.user_id = user2_id where user1_id = "+userID;
             return dBManager.ExecuteReader(sql);
         }
         public DataTable getUserPostFromDate(int userId,DateTime date)
@@ -224,7 +224,7 @@ namespace archNoire.DBControllers
         }
         public DataTable getEventsUserGoingTo(int userID)
         {
-            string sql = "select * from dbo.[GOING_TO_EVENT] as g join EVENT as e on e.event_id = g.event_id left join EVENT_PHOTO as p on p.event_id = g.event_id where g.user_id=" + userID + " ";
+            string sql = "select * from dbo.[GOING_TO_EVENT] as g join EVENT as e on e.event_id = g.event_id left join EVENT_PHOTO as p on p.event_id = g.event_id join [PAGE] as k on k.page_id = e.page_id left join PAGE_PHOTO as d on d.page_id = e.page_id where g.user_id=" + userID + " ";
             return dBManager.ExecuteReader(sql);
         }
     }

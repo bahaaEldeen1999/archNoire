@@ -116,6 +116,13 @@ namespace archNoire.Controllers
              
           //  DateTime date = page.date;
             string email = page.email;
+
+            // check for duplcate emails
+            DataTable pagesWithEmail = pageController.getPageByEmail(email);
+            if(pagesWithEmail == null || pagesWithEmail.Rows.Count == 0)
+            {
+                return false;
+            }
             if (password == check_password)
             {
                 if (password.Length < 1)
@@ -381,6 +388,13 @@ namespace archNoire.Controllers
             return RedirectToAction("Index", new { id = pageId });
 
         }
+
+        public ActionResult LogOut()
+        {
+            isLogged = false;
+            return RedirectToAction("Index", new { id = pageId });
+        }
+
 
 
     }

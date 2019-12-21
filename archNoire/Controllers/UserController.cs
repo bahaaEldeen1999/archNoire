@@ -118,7 +118,7 @@ namespace archNoire.Controllers
             string email = user.email;
             // check email no used
             DataTable duserEmails = userController.getUserByEmail(email);
-            if(duserEmails != null)
+            if(duserEmails != null || duserEmails.Rows.Count == 0)
             {
                 // email in use
                 return false;
@@ -378,6 +378,25 @@ namespace archNoire.Controllers
                 // get user2 info 
                 DataTable dUser2 = userController.getUserInfoFromId(id);
                 ViewBag.user2 = dUser2;
+
+                DataTable duser2Posts = userController.getUserPosts(id);
+                ViewBag.dposts = duser2Posts;
+                // get comments for each post
+
+                List<DataTable> comments = new List<DataTable>(); ;
+
+                if (duser2Posts != null)
+                {
+                    foreach (DataRow row in duser2Posts.Rows)
+                    {
+                        int userID = Convert.ToInt32(row["user_id"].ToString());
+                        int postId = Convert.ToInt32(row["post_id"].ToString());
+                        DataTable dc = userController.getPostComments(userID, postId);
+                        comments.Add(dc);
+
+                    }
+                }
+                ViewBag.comments = comments;
 
                 return View();
             }
@@ -677,6 +696,40 @@ namespace archNoire.Controllers
         {
             isLogged = false;
             return RedirectToAction("Index", "LogIn");
+        }
+
+        [HttpPost]
+        public ActionResult likePostUserSearched(int userId, int postId, int userPostedID)
+        {
+            if (userController.insertUserPostLike(userPostedID, postId, userId) != 0)
+            {
+                // update number of likes
+                DataTable dNoOfLikes = userController.getNoOfLikesOfUserPost(userPostedID, postId);
+                int noOfLikes = Convert.ToInt32(dNoOfLikes.Rows.Count);
+
+                userController.updatePostNoOfLikes(userPostedID, postId, noOfLikes);
+            }
+            return RedirectToAction("UserSearched", new { id = userPostedID });
+        }
+        [HttpPost]
+        public ActionResult likeCommentUsersearched(int user_liked_id, int postId, int userPostedID, int userCommentedID, int comment_id)
+        {
+            if (userController.insertUserPostCommentLike(userCommentedID, userPostedID, postId, comment_id, user_liked_id) != 0)
+            {
+                // update number of likes
+                DataTable dNoOfLikes = userController.getNoOfLikesOfUserComment(userPostedID, postId, comment_id);
+                int noOfLikes = Convert.ToInt32(dNoOfLikes.Rows.Count);
+
+                userController.updateCommentNoOfLikes(userPostedID, postId, comment_id, noOfLikes);
+            }
+            return RedirectToAction("UserSearched", new { id = userPostedID });
+        }
+        [HttpPost]
+        public ActionResult AddCommentUserSearched(int userID, int postID, int userPostedID, string text)
+        {
+            userController.insertUserPostComment(userPostedID, postID, userID, text, 0);
+
+            return RedirectToAction("UserSearched", new { id = userPostedID });
         }
     }
 }

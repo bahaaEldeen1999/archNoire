@@ -138,7 +138,11 @@
                                 {
                                 <div class="comments">
                                     @foreach (DataRow rowComment in ViewBag.comments[i].Rows)
-                                    {
+                                    {<!--whos posted it-->
+                                        <div class="info">
+                                            <img src="@row["source"].ToString()" style="width:20px;height:20px;border-radius:50%" /> <strong>@row["name"].ToString()</strong>
+
+                                        </div>
                                         <p>@rowComment["text"].ToString()</p>
                                         <p>no of likes @rowComment["no_of_likes"].ToString()</p>
 

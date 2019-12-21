@@ -71,7 +71,7 @@
         <h4> @ViewBag.email  </h4>
         <h4>@ViewBag.location</h4>
         <h4>@ViewBag.gender</h4>
-        <h4> @ViewBag.birthDate</h4>
+        <h4> @ViewBag.birthDate.ToString("dddd, dd MMMM yyyy")</h4>
         <h4> @ViewBag.phone </h4>
 
 
@@ -93,16 +93,20 @@
                         <div class="event">
 
                             <div class="thumbnail">
-                                @if (row["source"] != null)
+                                <!--whos posted it-->
+                                <div class="info">
+                                    <img src="@row["source"].ToString()" style="width:20px;height:20px;border-radius:50%" /> <strong>@row["name"].ToString()</strong>
+                                    <h4>@row["eventLocation"].ToString() <span style="font-size:10px">@row["date"].ToString()</span></h4>
+
+                                </div>
+                                @if (row["eventSource"] != null)
                                 {
-                                    <img src="@row["source"].ToString()" />
+                                    <img src="@row["eventSource"].ToString()" />
                                 }
                                 <div class="caption">
-
+                                   
                                     <p>@row["ticket_price"].ToString()</p>
-                                    <p>@row["location"].ToString()</p>
-
-                                    <p>@row["date"].ToString()</p>
+ 
                                 </div>
 
                                 <div class="icons">
@@ -194,24 +198,30 @@
                                 {
                                     foreach (DataRow rowComment in ViewBag.comments[i].Rows)
                                     {
-                                        <div class="comments" style="padding:20px;border:black 1px solid;border-radius:50px 45px 45px 15px;margin:10px">
+                                <div class="comments" style="padding:20px;border:black 1px solid;border-radius:50px 45px 45px 15px;margin:10px">
+                                    <!--whos posted it-->
+                                    <div class="info">
+                                        <img src="@rowComment["source"].ToString()" style="width:20px;height:20px;border-radius:50%" /> <strong>@rowComment["name"].ToString()</strong>
+                                     
 
-                                            <p>@rowComment["text"].ToString()</p>
+                                    </div>
+                                    
+                                    <p>@rowComment["text"].ToString()</p>
 
-                                            @using (Html.BeginForm("likeComment", "User", FormMethod.Post))
-                                            {
-                                            <input style="display:none" value="@ViewBag.userID" name="user_liked_id" />
-                                            <input style="display:none" value="@rowComment["user_commented_id"]" name="userCommentedID" />
-                                            <input style="display:none" value="@rowComment["post_id"]" name="postId" />
-                                            <input style="display:none" value="@rowComment["user_posted_id"]" name="userPostedID" />
-                                            <input style="display:none" value="@rowComment["comment_id"]" name="comment_id" />
-
-
-                                            <button type="submit" style="background-color:transparent;outline:none;border:none"><i class="fa fa-thumbs-up fa"></i></button> @row["no_of_likes"].ToString()
-                                            }
+                                    @using (Html.BeginForm("likeComment", "User", FormMethod.Post))
+                                    {
+                                        <input style="display:none" value="@ViewBag.userID" name="user_liked_id" />
+                                        <input style="display:none" value="@rowComment["user_commented_id"]" name="userCommentedID" />
+                                        <input style="display:none" value="@rowComment["post_id"]" name="postId" />
+                                        <input style="display:none" value="@rowComment["user_posted_id"]" name="userPostedID" />
+                                        <input style="display:none" value="@rowComment["comment_id"]" name="comment_id" />
 
 
-                                        </div>
+                                        <button type="submit" style="background-color:transparent;outline:none;border:none"><i class="fa fa-thumbs-up fa"></i></button> @row["no_of_likes"].ToString()
+                                    }
+
+
+                                </div>
                                     }
                             }
                             </div>

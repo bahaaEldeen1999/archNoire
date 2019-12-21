@@ -7,9 +7,7 @@
 
 <h2>Users</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 <table class="table">
     <tr>
         <th>
@@ -69,7 +67,6 @@
             @Html.ActionLink("Edit", "EditUser", new { user_id = item.user_id }) |
             @Html.ActionLink("Friends", "UserFriends", new { user_id = item.user_id }) |
             @Html.ActionLink("Posts", "UserPosts", new { user_id = item.user_id }) |
-            @Html.ActionLink("Details", "Details", new { user_id = item.user_id }) |
             @Html.ActionLink("Delete", "DeleteUser", new { user_id = item.user_id })
         </td>
     </tr>

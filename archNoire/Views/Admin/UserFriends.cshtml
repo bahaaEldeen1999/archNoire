@@ -88,7 +88,6 @@
             <td>
                 @Html.ActionLink("Edit", "EditUser", new { user_id = item.user_id }) |
                 @Html.ActionLink("Friends", "UserFriends", new { user_id = item.user_id }) |
-                @Html.ActionLink("Details", "Details", new { user_id = item.user_id }) |
                 @Html.ActionLink("Remove", "DeleteFriend", new { user2_id = item.user_id, user1_id = Model.user_id })
             </td>
         </tr>
@@ -97,6 +96,5 @@
 </table>
 
 <p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     @Html.ActionLink("Back to Users", "Users")
 </p>

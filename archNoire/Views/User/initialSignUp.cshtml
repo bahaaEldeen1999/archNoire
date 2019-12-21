@@ -28,7 +28,7 @@
                         FormMethod.Post))
     {
 
-        @Html.TextBoxFor(User => User.bio, new { @type = "text", @class = " bio-initial" })
+        @Html.TextBoxFor(User => User.bio, new { @type = "text", @class = " bio-initial",@required = "true" })
 
         if(ViewBag.Message.Length > 0)
         {

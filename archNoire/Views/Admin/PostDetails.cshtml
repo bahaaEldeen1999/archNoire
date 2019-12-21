@@ -1,0 +1,89 @@
+﻿@model archNoire.Models.PostDetails
+
+@{
+    ViewBag.Title = "PostDetails";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@Model.post.name Post</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.post.user_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.user_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.text)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.text)
+        </dd>
+
+    </dl>
+</div>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.comments[0].comment_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.comments[0].user_commented_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.comments[0].name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.comments[0].text)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.comments[0].no_of_likes)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var comment in Model.comments)
+{
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => comment.comment_id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => comment.user_commented_id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => comment.name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => comment.text)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => comment.no_of_likes)
+    </td>
+    <td>
+        @Html.ActionLink("Remove", "DeleteComment", new {user_posted_id = comment.user_posted_id, post_id = comment.post_id, comment_id = comment.comment_id, user_commented_id = comment.user_commented_id})
+    </td>
+</tr>
+}
+</table>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "UserPosts", new { user_id = Model.post.user_id})
+</p>

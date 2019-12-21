@@ -1,0 +1,102 @@
+﻿@model archNoire.Models.userFriends
+
+@{
+    ViewBag.Title = "UserFriends";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+    <h2>@Model.name Friends</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.user_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+    </dl>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.friends[0].user_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.friends[0].name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.friends[0].bio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.friends[0].gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.friends[0].phone_no)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.friends[0].location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.friends[0].birth_date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.friends[0].personal_email)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.friends)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.user_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.bio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.phone_no)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.birth_date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.personal_email)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditUser", new { user_id = item.user_id }) |
+                @Html.ActionLink("Friends", "UserFriends", new { user_id = item.user_id }) |
+                @Html.ActionLink("Details", "Details", new { user_id = item.user_id }) |
+                @Html.ActionLink("Remove", "DeleteFriend", new { user2_id = item.user_id, user1_id = Model.user_id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to Users", "Users")
+</p>

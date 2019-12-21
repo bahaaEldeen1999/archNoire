@@ -1,0 +1,46 @@
+﻿@model IEnumerable<archNoire.Models.Admin>
+
+@{
+    ViewBag.Title = "Admins";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Admins</h2>
+
+<p>
+    @Html.ActionLink("Create New Admin", "CreateAdmin")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.admin_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.admin_email)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.admin_id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.admin_email)
+        </td>
+
+        <td>
+            @Html.ActionLink("Edit", "EditAdmin", new {admin_id = item.admin_id }) |
+            @Html.ActionLink("Delete", "DeleteAdmin", new { admin_id = item.admin_id})
+        </td>
+    </tr>
+}
+
+</table>

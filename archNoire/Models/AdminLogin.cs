@@ -5,12 +5,9 @@ using System.Web;
 
 namespace archNoire.Models
 {
-    public class Admin
+    public class AdminLogin
     {
         public int admin_id { get; set; }
-        public string name { set; get; }
-        public string admin_email { set; get; }
-        public string password { set; get; }
-
+        public string password { get; set; }
     }
 }

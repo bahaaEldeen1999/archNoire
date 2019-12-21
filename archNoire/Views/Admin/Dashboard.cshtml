@@ -1,0 +1,135 @@
+﻿@model archNoire.Models.Statistics
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Dashboard</h2>
+
+<div>
+    <h4>Statistics</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.usersCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usersCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pagesCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pagesCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.userPostsCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.userPostsCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pagePostsCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pagePostsCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.eventsCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.eventsCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.topUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.topUser)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pageUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pageUser)
+        </dd>
+
+    </dl>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <canvas id="user-page"></canvas>
+    </div>
+    <div class="col-md-6">
+        <canvas id="userPost-pagePost"></canvas>
+    </div>
+
+</div>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+<script src="~/Scripts/chart.js"></script>
+
+<script>
+        let userPageCtx = document.getElementById("user-page").getContext("2d");
+    let data1 = {
+        datasets: [{
+            data: [@Model.usersCount, @Model.pagesCount],
+            backgroundColor: ["#3e95cd", "#8e5ea2"]
+        }],
+
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: [
+            'user',
+            'page'
+        ],
+
+    };
+    var myPieChart1 = new Chart(userPageCtx, {
+        type: 'pie',
+        data: data1
+
+    });
+
+
+
+       let userPagePostCtx = document.getElementById("userPost-pagePost").getContext("2d");
+    let data2 = {
+        datasets: [{
+            data: [@Model.userPostsCount, @Model.pagePostsCount],
+            backgroundColor: ["#3cba9f", "#e8c3b9"]
+        }],
+
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: [
+            'user',
+            'page'
+        ],
+
+    };
+    var myPieChart2 = new Chart(userPagePostCtx, {
+        type: 'pie',
+        data: data2
+
+    });
+</script>
+
+
+
+

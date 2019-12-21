@@ -1,0 +1,73 @@
+﻿@model archNoire.Models.PageReviews
+
+@{
+    ViewBag.Title = "PageReviews";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@Model.name Reviews</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.page_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.page_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+    </dl>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.reviews[0].user_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.reviews[0].name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.reviews[0].text)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var review in Model.reviews)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => review.user_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => review.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => review.text)
+            </td>
+
+            <td>
+                @Html.ActionLink("Delete Review", "DeleteReview", new { page_id = Model.page_id, user_id = review.user_id })
+            </td>
+        </tr>
+    }
+
+
+
+</table>
+
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Pages")
+</p>

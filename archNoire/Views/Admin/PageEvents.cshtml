@@ -1,0 +1,85 @@
+﻿@model archNoire.Models.PageEvents
+
+@{
+    ViewBag.Title = "PageEvents";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@Model.name Events</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.page_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.page_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+    </dl>
+</div>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.events[0].event_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.events[0].date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.events[0].eventLocation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.events[0].ticket_price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.events[0].no_of_people_going)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var @event in Model.events)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => @event.event_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @event.date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @event.eventLocation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @event.ticket_price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @event.no_of_people_going)
+            </td>
+
+            <td>
+                @Html.ActionLink("Delete event", "DeleteEvent", new { page_id = Model.page_id, event_id = @event.event_id })
+            </td>
+        </tr>
+    }
+
+
+
+</table>
+
+
+<p>
+    @Html.ActionLink("Back to List", "Pages")
+</p>

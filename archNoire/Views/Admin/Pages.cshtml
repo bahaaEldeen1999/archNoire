@@ -1,0 +1,67 @@
+﻿@model IEnumerable<archNoire.Models.page_admin>
+
+@{
+    ViewBag.Title = "Pages";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Pages</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.page_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.info)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.business_email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone_no)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.page_id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.info)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.business_email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone_no)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditPage", new { page_id = item.page_id }) |
+            @Html.ActionLink("Reviews", "PageReviews", new { page_id = item.page_id }) |
+            @Html.ActionLink("Posts", "PagePosts", new { page_id = item.page_id }) |
+            @Html.ActionLink("Events", "PageEvents", new { page_id = item.page_id }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "DeletePage", new { page_id = item.page_id })
+        </td>
+    </tr>
+}
+
+</table>

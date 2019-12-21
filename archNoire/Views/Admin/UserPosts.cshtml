@@ -1,0 +1,79 @@
+﻿@model archNoire.Models.userPosts
+
+@{
+    ViewBag.Title = "UserPosts";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@Model.name Posts</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.user_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+    </dl>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.posts[0].post_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.posts[0].text)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.posts[0].location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.posts[0].no_of_likes)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.posts)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.post_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.text)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.no_of_likes)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "PostDetails", new { user_id = Model.user_id, post_id = item.post_id }) | 
+                @Html.ActionLink("Delete Post", "DeletePost", new { user_id = Model.user_id, post_id = item.post_id })
+            </td>
+        </tr>
+    }
+    
+
+
+</table>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to Users", "Users")
+</p>
+

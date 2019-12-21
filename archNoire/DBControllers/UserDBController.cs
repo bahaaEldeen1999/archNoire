@@ -65,7 +65,7 @@ namespace archNoire.DBControllers
 
         public int insertUserPostPhoto(int user_id, int post_id, string source)
         {
-            string sql = String.Format("insert into [USER_POST_PHOTO](user_id,post_id,source) values({0},{1},'{2}')", user_id, post_id, source);
+            string sql = String.Format("insert into [USER_POST_PHOTO](user_id,post_id,postSource) values({0},{1},'{2}')", user_id, post_id, source);
             return dBManager.ExecuteNonQuery(sql);
         }
         public int insertUserFriend(int user_id1, int user_id2)
@@ -179,7 +179,7 @@ namespace archNoire.DBControllers
         }
         public DataTable getUserInfoFromId(int id)
         {
-            string sql = "select * from dbo.[USER] where user_id=" + id ;
+            string sql = "select * from dbo.[USER]as u left join USER_PHOTO as ph on ph.user_id = u.user_id where u.user_id=" + id ;
             return dBManager.ExecuteReader(sql);
         }
         public DataTable getIfUserIsFriend(int user1ID,int user2ID)

@@ -15,6 +15,9 @@
     @Scripts.Render("~/bundles/modernizr")
 
     <style>
+        *{
+            transition:all .3s ease-in-out
+        }
         body {
             padding: 0;
             margin: 0;
@@ -23,7 +26,8 @@
             background: white;
             border: 1px solid black;
             color: black;
-            outline: 1px solid white
+            outline: 1px solid white;
+            border-radius: 15px 2px;
         }
 
             .btn:hover {
@@ -38,6 +42,10 @@
             a{
                 color:black !important;
             }
+        .fa:hover {
+            transform: scale(1.2);
+            color: #35393D
+        }
     </style>
 </head>
 <body>

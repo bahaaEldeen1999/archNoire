@@ -119,13 +119,13 @@ namespace archNoire.Controllers
 
             // check for duplcate emails
             DataTable pagesWithEmail = pageController.getPageByEmail(email);
-            if(pagesWithEmail == null || pagesWithEmail.Rows.Count == 0)
+            if(pagesWithEmail != null )
             {
                 return false;
             }
             if (password == check_password)
             {
-                if (password.Length < 1)
+                if (password.Length < 8)
                 {
                     ViewBag.message = "Invalid Password! (i.e. lessthan 8 characters)";
                     return false;
@@ -392,7 +392,23 @@ namespace archNoire.Controllers
         public ActionResult LogOut()
         {
             isLogged = false;
-            return RedirectToAction("Index", new { id = pageId });
+            // reset static variables
+           pageProfilePhoto = "../../Images/pageProfilePhoto/defaultIM.jpg";
+             pageId = 0;
+           isLogged = false;
+             pageEmail = "";
+           pagePassword = "";
+           name = "";
+           location = "";
+             pagePhone = "";
+        
+         phone_number = "";
+             info = "";
+             pagePhoto = "";
+
+           userController = new UserDBController();
+            pageController = new PageDBController();
+            return RedirectToAction("Index","Home");
         }
 
 

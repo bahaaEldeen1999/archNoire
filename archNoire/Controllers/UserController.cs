@@ -118,7 +118,7 @@ namespace archNoire.Controllers
             string email = user.email;
             // check email no used
             DataTable duserEmails = userController.getUserByEmail(email);
-            if(duserEmails != null || duserEmails.Rows.Count == 0)
+            if(duserEmails != null )
             {
                 // email in use
                 return false;
@@ -695,7 +695,23 @@ namespace archNoire.Controllers
         public ActionResult LogOut()
         {
             isLogged = false;
-            return RedirectToAction("Index", "LogIn");
+            // reset static variables
+            userProfilePhoto = "../../Images/userProfilePhoto/defaultIM.jpg";
+            userId = 0;
+            isLogged = false;
+             userEmail = "";
+            userPassword = "";
+           name = "";
+             location = "";
+            gender = "";
+             birth_date = DateTime.Now;
+          phone_number = "";
+           bio = "default bio";
+           userPhoto = "";
+
+           userController = new UserDBController();
+             pageController = new PageDBController();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]

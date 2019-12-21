@@ -47,15 +47,20 @@
             color: white;
             outline: 1px solid black
         }
+    .profilePhoto {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
 </style>
 
 
-<h2>user searched profile</h2>
+
 
 
 <div class="row">
     <div class="col col-md-2">
-        <img src="" alt="profile picture" />
+        <img src="@ViewBag.user2.Rows[0]["source"]" alt="profile picture" class="profilePhoto" style="display:block"/>
         @if (@ViewBag.friend)
         {
             using (Html.BeginForm("RemoveFriend", "User", FormMethod.Post))
@@ -74,8 +79,8 @@
                 <input id="AddFriend" type="submit" value="add friend" class="btn" />
             }
         }
-        <h3>@ViewBag.user2.Rows[0]["name"].ToString()</h3>
-        <p>@ViewBag.user2.Rows[0]["bio"].ToString()</p>
+        <h4>@ViewBag.user2.Rows[0]["name"].ToString()</h4>
+        <h4>@ViewBag.user2.Rows[0]["bio"].ToString()</h4>
         <h4>@ViewBag.user2.Rows[0]["phone_no"].ToString()</h4>
         <h4>@ViewBag.user2.Rows[0]["location"].ToString()</h4>
         <h4>@ViewBag.user2.Rows[0]["birth_date"].ToString()</h4>
@@ -156,7 +161,7 @@
                                         <input style="display:none" value="@rowComment["comment_id"]" name="comment_id" />
 
 
-                                        <button type="submit" style="background-color:transparent;outline:none;border:none"><i class="fa fa-thumbs-up fa"></i></button> @row["no_of_likes"].ToString()
+                                        <button type="submit" style="background-color:transparent;outline:none;border:none"><i class="fa fa-thumbs-up fa"></i></button> @rowComment["no_of_likes"].ToString()
                                     }
 
 

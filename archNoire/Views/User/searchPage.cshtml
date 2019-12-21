@@ -20,16 +20,22 @@
     .col {
         min-height: 100vh
     }
+    .col-md-6 ul li {
+        list-style: none;
+        margin: 20px;
+    }
+
 </style>
 
 
-<h2>search page</h2>
+
 
 
 <div class="row">
     @if (ViewBag.searchedUsers != null)
     {
-        <div class="col-md-12">
+        <div class="col-md-6">
+            <h2>users</h2>
             <ul>
                 @foreach (DataRow user in ViewBag.searchedUsers.Rows)
                 {
@@ -40,7 +46,8 @@
     }
     @if (ViewBag.searchedPages != null)
     {
-        <div class="col-md-12">
+        <div class="col-md-6">
+            <h2>pages</h2>
             <ul>
                 @foreach (DataRow page in ViewBag.searchedPages.Rows)
                 {

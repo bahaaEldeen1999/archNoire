@@ -24,7 +24,7 @@ namespace archNoire.Controllers
         static private string phone_number;
         static private string info;
         static private string pagePhoto;
-
+        
         static UserDBController userController = new UserDBController();
         static PageDBController pageController = new PageDBController();
         [HttpPost]
@@ -98,6 +98,25 @@ namespace archNoire.Controllers
 
                 DataTable devents = pageController.getPageEvents(pageId);
                 ViewBag.events = devents;
+
+                List<DataTable> peopleGoing = new List<DataTable>(); ;
+
+                if (devents != null)
+                {
+                    foreach (DataRow row in devents.Rows)
+                    {
+                        int pageID = Convert.ToInt32(row["page_id"].ToString());
+                        int eventID = Convert.ToInt32(row["event_id"].ToString());
+                        DataTable dc = pageController.getUserGoingToEvent(eventID, pageID);
+                        peopleGoing.Add(dc);
+
+                    }
+                }
+                ViewBag.peopleGoing = peopleGoing;
+                // get no of people like page
+                ViewBag.peopleLikePage = pageController.getUsersLikePage(pageId);
+
+
                 DataTable dreviews = pageController.getPageREview(pageId);
                 ViewBag.reviews = dreviews;
 
@@ -387,6 +406,17 @@ namespace archNoire.Controllers
 
             return RedirectToAction("Index", new { id = pageId });
 
+        }
+        [HttpPost]
+        public ActionResult updatePagePassword(string password)
+        {
+            if (password.Length > 7)
+            {
+                pageController.updatePagePassword(pageId, password);
+
+
+            }
+            return RedirectToAction("Index", new { id = pageId });
         }
 
         public ActionResult LogOut()

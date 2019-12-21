@@ -75,8 +75,43 @@
         <h4> @ViewBag.birthDate.ToString("dddd, dd MMMM yyyy")</h4>
         <h4> @ViewBag.phone </h4>
 
+        <!--show list of user freinds-->
+        <button type="button" class="btn" data-toggle="collapse" style="border-radius:5px ;display:block;margin:10px" data-target="#friends">friends <span class="badge">@if (ViewBag.friends == null) { <strong>0 </strong> }else {<strong>@ViewBag.friends.Rows.Count</strong> }</span></button>
+        <div id="friends" class="collapse">
 
+            <ul class="list-group">
+                @if (ViewBag.friends != null)
+                {
+                    foreach (DataRow row in ViewBag.friends.Rows)
+                    {
+                        <li class="list-group-item">
+                            <img src="@row["source"].ToString()" style="width:20px;height:20px;border-radius:50%" /> <strong> <a href="@Url.Action("UserSearched", "User", new { id = Convert.ToInt32(row["user_id"].ToString()) })">@row["name"].ToString() </a></strong>
 
+                        </li>
+                    }
+                }
+            </ul>
+
+        </div>
+
+        <!--show list of pages user like-->
+        <button type="button" class="btn " style="border-radius:5px ;display:block;margin:10px" data-toggle="collapse" data-target="#likedPages">pages liked <span class="badge">@if (ViewBag.likedPages == null) { <strong>0 </strong> }else{<strong>@ViewBag.likedPages.Rows.Count</strong>}</span></button>
+        <div id="likedPages" class="collapse">
+
+            <ul class="list-group">
+                @if (ViewBag.friends != null)
+                {
+                    foreach (DataRow row in ViewBag.likedPages.Rows)
+                    {
+                        <li class="list-group-item">
+                            <img src="@row["source"].ToString()" style="width:20px;height:20px;border-radius:50%" /> <strong> <a  href="@Url.Action("PageSearched", "User", new { pageID = Convert.ToInt32(row["page_id"].ToString()) })">@row["name"].ToString() </a> </strong>
+
+                        </li>
+                    }
+                }
+            </ul>
+
+        </div>
 
     </div>
     <div class="col col-md-2">

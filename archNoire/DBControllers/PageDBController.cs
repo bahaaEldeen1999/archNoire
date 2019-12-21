@@ -251,6 +251,16 @@ namespace archNoire.DBControllers
 
         }
 
+        public DataTable getUserGoingToEvent(int event_id,int page_id)
+        {
+            string sql = "select * from dbo.[GOING_TO_EVENT] as e join [USER] as u on u.user_id = e.user_id join USER_PHOTO as ph on ph.user_id = u.user_id where e.event_id = " + event_id+" and e.page_id = "+page_id;
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getUsersLikePage(int page_id)
+        {
+            string sql = "select * from dbo.[PAGE_LIKES] as e join [USER] as u on u.user_id = e.user_id join USER_PHOTO as ph on ph.user_id = u.user_id where e.page_id = " + page_id;
+            return dBManager.ExecuteReader(sql);
+        }
         // updates
         public int updatePostNoOfLikes(int page_id, int post_id, int no)
         {
@@ -267,33 +277,12 @@ namespace archNoire.DBControllers
             string sql = String.Format("update PAGE_POST_COMMENT set no_of_likes = {1} where page_id = {0} and page_post_id = {2} and page_post_comment_id = {3} ", page_id, no, post_id, comment_id);
             return dBManager.ExecuteNonQuery(sql);
         }
-        // from user 
-      /*  
-       *  public int updateUserInfo(int userID, string name, string bio, string gender, string phone_no, string location, DateTime birth_date, string personal_email, string password)
+        public int updatePagePassword(int page_id, string password)
         {
-            string sql = String.Format("update [USER] set name ='{0}',bio = '{1}',gender = '{2}' , phone_no = '{3}',location = '{4}',birth_date = '{5}',personal_email='{6}',password='{7}' where user_id = {8} ", name, bio, gender, phone_no, location, birth_date.Date, personal_email, password, userID);
+            string sql = String.Format("update PAGE set password = '{1}' where page_id = {0} ", page_id, password);
             return dBManager.ExecuteNonQuery(sql);
         }
-        public int UpdateUserBio(int user_id, string bio)
-        {
-            string sql = String.Format("update [USER] set bio = '{1}' where user_id = {0} ", user_id, bio);
-            return dBManager.ExecuteNonQuery(sql);
-        }
-        public int UpdateUserPhoto(int user_id, string source)
-        {
-            string sql = String.Format("update USER_PHOTO set source = '{1}' where user_id = {0} ", user_id, source);
-            return dBManager.ExecuteNonQuery(sql);
-        }
-        public int updatePostNoOfLikes(int user_id, int post_id, int no)
-        {
-            string sql = String.Format("update USER_POST set no_of_likes = {1} where user_id = {0} and post_id = {2} ", user_id, no, post_id);
-            return dBManager.ExecuteNonQuery(sql);
-        }
-        public int updateCommentNoOfLikes(int user_id, int post_id, int comment_id, int no)
-        {
-            string sql = String.Format("update USER_POST_COMMENT set no_of_likes = {1} where user_posted_id = {0} and post_id = {2} and comment_id = {3} ", user_id, no, post_id, comment_id);
-            return dBManager.ExecuteNonQuery(sql);
-        }
-        */
+        
+        
     }
 }

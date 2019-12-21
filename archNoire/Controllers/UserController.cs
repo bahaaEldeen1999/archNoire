@@ -65,7 +65,7 @@ namespace archNoire.Controllers
         {
             if (isLogged)
             {
-               
+             
                 ViewBag.Message = "";
                 userId = id;
                 ViewBag.userID = userId;
@@ -100,6 +100,17 @@ namespace archNoire.Controllers
                 // get events user is going to
                 DataTable devents = userController.getEventsUserGoingTo(userId);
                 ViewBag.events = devents;
+
+                // get freinds list
+                DataTable dfriends = userController.getUserFreinds(userId);
+                ViewBag.friends = dfriends;
+
+                // get lis og pages User like
+                DataTable dlikedPages= userController.getPagesUserLike(userId);
+                ViewBag.likedPages = dlikedPages;
+
+
+
                 return View();
             }
      
@@ -363,6 +374,10 @@ namespace archNoire.Controllers
         {
             if (isLogged)
             {
+                if(userId == id)
+                {
+                      return RedirectToAction("Index", new { id = userId });
+                }
                 ViewBag.userSearchedID = id;
                 ViewBag.userID = userId;
                 // check if friend with him

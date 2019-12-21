@@ -53,7 +53,8 @@
         background: white;
         border: 1px solid black;
         color: black;
-        outline: 1px solid white
+        outline: 1px solid white;
+        margin:10px;
     }
 
         .btn:hover {
@@ -61,6 +62,15 @@
             border: 1px solid white;
             color: white;
             outline: 1px solid black
+        }
+        .event{
+            margin-top:20px
+        }
+        .badge{
+            background:transparent;
+            border:1px solid black;
+            color:black;
+
         }
 </style>
 
@@ -77,14 +87,42 @@
 
 
         <h4> @ViewBag.phone </h4>
+        <div style="text-align:center">
+            <h5>update password mini form</h5>
+            @using (Html.BeginForm("updatePagePassword", "Page", FormMethod.Post))
+            {
+                <input class="addPost form-control" name="password" type="password" required placeholder="new password" />
+                <button class="btn">update password</button>
+                <h6>no time for a new page to update your password mate ...just live with it</h6>
+            }
+            <!--show list of people like page freinds-->
+            <button type="button" class="btn" data-toggle="collapse" style="border-radius:5px ;display:block;margin:10px" data-target="#peopleLikePage">people like page <span class="badge">@if (ViewBag.peopleLikePage == null)
+            {<strong>0 </strong> }
+            else
+            {<strong>@ViewBag.peopleLikePage.Rows.Count</strong>}</span></button>
+            <div id="peopleLikePage" class="collapse in">
 
-        @using (Html.BeginForm("LogOut", "Page", FormMethod.Post))
-        {
-            <button class="btn">log out</button>
-        }
+                <ul class="list-group">
+                    @if (ViewBag.peopleLikePage != null)
+                    {
+                        foreach (DataRow row in ViewBag.peopleLikePage.Rows)
+                        {
+                            <li class="list-group-item">
+                                <img src="@row["source"].ToString()" style="width:20px;height:20px;border-radius:50%" /> <strong> @row["name"].ToString()</strong>
 
+                            </li>
+                        }
+                    }
+                </ul>
+
+            </div>
+            @using (Html.BeginForm("LogOut", "Page", FormMethod.Post))
+            {
+                <button class="btn">log out</button>
+            }
 
         </div>
+    </div>
     <div class="col col-md-5">
         <div class="addPostForm">
             <h3>add post</h3>
@@ -188,9 +226,11 @@
             {
                 <div class="events">
                     @{
-
+                        int i = 0;
                         foreach (DataRow row in ViewBag.events.Rows)
                         {
+
+
                             <div class="event">
 
                                 <div class="thumbnail">
@@ -205,7 +245,7 @@
                                         <img src="@row["eventSource"].ToString()" style="border-radius:0;width:300px" />
                                     }
                                         <div class="caption">
-                                           
+
                                             <p>@row["ticket_price"].ToString()</p>
 
 
@@ -215,10 +255,37 @@
 
                                             </div>
 
+                                            @if (ViewBag.peopleGoing[i] != null)
+                                            {
+                                                string target = "people" + i;
+                                                 <!--show list of people going-->
+                                                    <button type="button" class="btn" data-toggle="collapse" style="border-radius:5px ;display:block;margin:10px" data-target="#@target ">view people going</button>
+                                                    <div id="@target" class="collapse in">
+
+                                                        <ul class="list-group">
+                                                            @if (ViewBag.peopleGoing[i] != null)
+                                                            {
+                                                               
+                                                                foreach (DataRow peopleRow in ViewBag.peopleGoing[i].Rows)
+                                                                {
+                                                                    <li class="list-group-item">
+                                                                        <img src="@peopleRow["source"].ToString()" style="width:20px;height:20px;border-radius:50%" /> <strong>@peopleRow["name"].ToString() </strong>
+
+                                                                    </li>
+                                                                }
+                                                            }
+
+                                                        </ul>
+
+                                                    </div>
+                                                
+
+                                            }
                                         </div>
 
                             </div>
                                 </div>
+                            i++;
 
                         }
                     }

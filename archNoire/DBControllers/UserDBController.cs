@@ -227,5 +227,15 @@ namespace archNoire.DBControllers
             string sql = "select * from dbo.[GOING_TO_EVENT] as g join EVENT as e on e.event_id = g.event_id left join EVENT_PHOTO as p on p.event_id = g.event_id join [PAGE] as k on k.page_id = e.page_id left join PAGE_PHOTO as d on d.page_id = e.page_id where g.user_id=" + userID + " ";
             return dBManager.ExecuteReader(sql);
         }
+        public DataTable getUserFreinds(int userID)
+        {
+            string sql = "select * from dbo.[FRIENDS] as f join [USER] as u on f.user2_id = u.user_id join [USER_PHOTO] as ph on ph.user_id = u.user_id where f.user1_id=" + userID;
+            return dBManager.ExecuteReader(sql);
+        }
+        public DataTable getPagesUserLike(int userID)
+        {
+            string sql = "select * from dbo.[PAGE_LIKES] as l join PAGE as p on p.page_id = l.page_id join PAGE_PHOTO as ph on ph.page_id = p.page_id where l.user_id =  "+userID;
+            return dBManager.ExecuteReader(sql);
+        }
     }
 }

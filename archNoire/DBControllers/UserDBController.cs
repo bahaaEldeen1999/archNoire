@@ -229,7 +229,7 @@ namespace archNoire.DBControllers
         }
         public DataTable getUserFreinds(int userID)
         {
-            string sql = "select * from dbo.[FRIENDS] as f join [USER] as u on f.user2_id = u.user_id join [USER_PHOTO] as ph on ph.user_id = u.user_id where f.user1_id=" + userID;
+            string sql = "select * from dbo.[FRIENDS] as f join [USER] as u on f.user2_id = u.user_id join [USER_PHOTO] as ph on ph.user_id = u.user_id where f.user1_id=" + userID+" and f.user2_id != "+userID;
             return dBManager.ExecuteReader(sql);
         }
         public DataTable getPagesUserLike(int userID)

@@ -193,7 +193,56 @@ namespace archNoire.Controllers
             return RedirectToAction("Index", "Signup");
 
         }
+        bool validateSetting(User user)
+        {
+            string name = user.name;
+            string password = user.password;
+            string check_password = user.check_password;
+            string phone = user.phone_number;
+            string location = user.location;
+            string gender = user.gender;
+            DateTime birth_date = user.birth_date;
+            string email = user.email;
+          
+            if (password == check_password)
+            {
+                if (password.Length < 8)
+                {
+                    ViewBag.message = "Invalid Password! (i.e. lessthan 8 characters)";
+                    return false;
+                }
+                if (phone[0] != '0' || phone[1] != '1')
+                {
+                    ViewBag.message = "Invalid Phone Number! (i.e. Must be in the format 01xxxxxxxxx, exactly 11 digit)";
+                    return false;
+                }
+                if (location.Length < 3)
+                {
+                    ViewBag.message = "Invalid Location! (i.e. Must be more than 3 characters)";
+                    return false;
+                }
+                if (birth_date.Year < 1920 || birth_date.Year > 2020 || birth_date.Month < 1 || birth_date.Day < 1)
+                {
+                    ViewBag.message = "Invalid BirthDate! (i.e. Must be in the format mm/dd/yyyy)";
+                    return false;
+                }
+                if (phone != "" && location != "" && gender != "" && name != "" && password != "")
+                {
 
+                    return true;
+                }
+                else
+                {
+                    ViewBag.message = "please fill all fields";
+                    return false;
+                }
+            }
+            else
+            {
+                ViewBag.message = "please make sure you entered the same passwords";
+                return false;
+            }
+        }
         [HttpPost]
         public ActionResult  UploadInitialImage(HttpPostedFileBase file)
         {
@@ -275,17 +324,30 @@ namespace archNoire.Controllers
         {
             // validation
             user.check_password = user.password;
-            if (validateSignUp(user))
+            if (validateSetting(user))
             {
-                string name = user.name;
-                string password = user.password;
-                string phone = user.phone_number;
-                string location = user.location;
-                string gender = user.gender;
-                DateTime birth_date = user.birth_date;
-                string email = user.email;
-                string bio = user.bio;
-                userController.updateUserInfo(userId, name, bio, gender, phone, location, birth_date, email, password);
+                string name1 = user.name;
+                string password1 = user.password;
+                string phone1 = user.phone_number;
+                string location1 = user.location;
+                string gender1 = user.gender;
+                DateTime birth_date1 = user.birth_date;
+                string email1 = user.email;
+                string bio1 = user.bio;
+                if (userController.updateUserInfo(userId, name1, bio1, gender1, phone1, location1, birth_date1, email1, password1) != 0)
+                {
+
+                  
+                        name = name1;
+                        location =location1;
+                        gender = gender1;
+                        phone_number =phone1;
+                        bio = bio1;
+                        birth_date =birth_date1;
+        
+
+                    
+                }
             }
             ViewBag.userID = userId;
 

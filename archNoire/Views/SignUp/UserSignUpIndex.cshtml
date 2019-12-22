@@ -28,20 +28,34 @@
             @using (Html.BeginForm("InitialSignUp", "User", FormMethod.Post))
             {
                 @Html.TextBoxFor(UserAndPage => UserAndPage.user.name, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "name" })
+                @Html.ValidationMessageFor(UserAndPage => UserAndPage.user.name, "", new { @class = "text-danger" })
+
                 @Html.TextBoxFor(UserAndPage => UserAndPage.user.email, new { @type = "email", @class = "form-control", @required = "true", @placeholder = "email" })
+                @Html.ValidationMessageFor(UserAndPage => UserAndPage.user.email, "", new { @class = "text-danger" })
 
                 @Html.TextBoxFor(UserAndPage => UserAndPage.user.password, new { @class = "form-control", @type = "password", @required = "true", @placeholder = "password" })
+                @Html.ValidationMessageFor(UserAndPage => UserAndPage.user.password, "", new { @class = "text-danger" })
+
+
                 @Html.TextBoxFor(UserAndPage => UserAndPage.user.check_password, new { @class = "form-control", @type = "password", @required = "true", @placeholder = "confirm password" })
+                @Html.ValidationMessageFor(UserAndPage => UserAndPage.user.check_password, "", new { @class = "text-danger" })
+
 
                 <label>male : </label>
                 @Html.RadioButtonFor(UserAndPage => UserAndPage.user.gender, "Male", new { @class = "radio" })
                 <label>  female : </label>
                 @Html.RadioButtonFor(UserAndPage => UserAndPage.user.gender, "Female", new { @class = "radio" })
+                @Html.ValidationMessageFor(UserAndPage => UserAndPage.user.gender, "", new { @class = "text-danger" })
+
                 @Html.TextBoxFor(UserAndPage => UserAndPage.user.location, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "location" })
+                @Html.ValidationMessageFor(UserAndPage => UserAndPage.user.location, "", new { @class = "text-danger" })
 
                 @Html.TextBoxFor(UserAndPage => UserAndPage.user.birth_date, new { @class = "form-control", @type = "date", @required = "true" })
-                @Html.TextBoxFor(UserAndPage => UserAndPage.user.phone_number, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "phone number" })
+                @Html.ValidationMessageFor(UserAndPage => UserAndPage.user.birth_date, "", new { @class = "text-danger" })
 
+
+                @Html.TextBoxFor(UserAndPage => UserAndPage.user.phone_number, new { @class = "form-control", @type = "text", @required = "true", @placeholder = "phone number" })
+                @Html.ValidationMessageFor(UserAndPage => UserAndPage.user.phone_number, "", new { @class = "text-danger" })
                 <input id="UserSubmit" type="submit" value="User Signup" class="btn" />
             }
 
